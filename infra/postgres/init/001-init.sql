@@ -4,9 +4,16 @@
 -- (docker-entrypoint-initdb.d). Idempotent: IF NOT EXISTS.
 --
 -- Layering data (bukan 3 database terpisah — satu service):
---   bronze -> telemetry_raw  (mentah dari MQTT)
+--   bronze -> telemetry_raw  (mentah dari MQTT, idempotent via stream_id)
 --   silver -> telemetry_clean (tersanitasi + anomaly score)
 --   gold   -> forecasts, shipments, route_results (siap konsumsi)
+--
+-- Catatan ownership:
+--   - public + gold      : Prisma (CLI pakai role samapara_owner;
+--                          runtime pakai samapara_app)
+--   - bronze + silver    : SQL init + worker Python (samapara_ai)
+--   - devices            : ditulis Hono (samapara_app), dibaca Go
+--                          (samapara_ingestor_ro) & Python (samapara_ai)
 -- ============================================================
 
 CREATE EXTENSION IF NOT EXISTS timescaledb;
@@ -26,16 +33,43 @@ CREATE TABLE IF NOT EXISTS public.devices (
     location_name TEXT,
     latitude DOUBLE PRECISION,
     longitude DOUBLE PRECISION,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE INDEX IF NOT EXISTS idx_devices_active
+ON public.devices (active);
+
 -- ------------------------------------------------------------------
--- bronze: telemetry mentah apa adanya (idempotent via device+time+sequence)
+-- public: user (auth fase lanjutan; dibuat agar schema Prisma
+-- public+gold selalu sinkron dengan database)
+-- ------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.users (
+    id UUID PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'OPERATOR',
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_users_role
+ON public.users (role);
+
+-- ------------------------------------------------------------------
+-- bronze: telemetry mentah apa adanya.
+-- stream_id = ID entry Redis Streams (mis. "1754600000123-0") —
+-- membuat persistence idempotent saat worker crash setelah commit
+-- tapi sebelum XACK (redelivery di-dedupe oleh UNIQUE (time, stream_id)).
 -- ------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS bronze.telemetry_raw (
     time TIMESTAMPTZ NOT NULL,
+    stream_id TEXT NOT NULL,
     device_id UUID NOT NULL,
+    sequence BIGINT,
     weight_kg DOUBLE PRECISION,
     distance_cm DOUBLE PRECISION,
     battery_percent DOUBLE PRECISION,
@@ -50,7 +84,13 @@ SELECT create_hypertable(
     if_not_exists => TRUE
 );
 
-CREATE INDEX IF NOT EXISTS idx_telemetry_device_time
+CREATE UNIQUE INDEX IF NOT EXISTS uq_telemetry_raw_stream
+ON bronze.telemetry_raw (
+    time,
+    stream_id
+);
+
+CREATE INDEX IF NOT EXISTS idx_telemetry_raw_device_time
 ON bronze.telemetry_raw (
     device_id,
     time DESC
@@ -61,7 +101,9 @@ ON bronze.telemetry_raw (
 -- ------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS silver.telemetry_clean (
     time TIMESTAMPTZ NOT NULL,
+    stream_id TEXT NOT NULL,
     device_id UUID NOT NULL,
+    sequence BIGINT,
 
     weight_kg DOUBLE PRECISION,
     fill_percent DOUBLE PRECISION,
@@ -77,6 +119,18 @@ SELECT create_hypertable(
     'silver.telemetry_clean',
     'time',
     if_not_exists => TRUE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uq_telemetry_clean_stream
+ON silver.telemetry_clean (
+    time,
+    stream_id
+);
+
+CREATE INDEX IF NOT EXISTS idx_telemetry_clean_device_time
+ON silver.telemetry_clean (
+    device_id,
+    time DESC
 );
 
 -- ------------------------------------------------------------------

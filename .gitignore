@@ -1,66 +1,973 @@
-# ============================================
-# SAMPARA — root .gitignore
-# Meng-ignore semua yang TIDAK boleh masuk git.
-# LOCKFILES TETAP DI-TRACK: pnpm-lock.yaml, uv.lock, go.sum
+# ============================================================
+# SAMPARA — ROOT .gitignore
+# ============================================================
+#
+# Yang TETAP di-track:
+# - pnpm-lock.yaml
+# - uv.lock
+# - go.sum
+# - go.mod
+# - package.json
+# - pyproject.toml
+# - prisma/schema.prisma
+# - prisma/migrations/**
+# - Dockerfile
+# - docker-compose*.yml
+# - compose*.yml
+# - infra configuration
+# - SQL migrations / init scripts
+# - .env.example
+#
+# Jangan commit:
+# - secrets
+# - env nyata
+# - dependencies
+# - generated files
+# - build outputs
+# - runtime data
+# - DB dumps
+# - local container storage
+# - logs
+# - certificates/private keys
+# ============================================================
 
-# --- Node dependencies ---
-node_modules/
-**/node_modules/
 
-# --- Python ---
-.venv/
-**/.venv/
-__pycache__/
-*.pyc
-.pytest_cache/
+# ============================================================
+# ENV / SECRETS
+# ============================================================
 
-# --- Nuxt / build outputs ---
-.nuxt/
-**/.nuxt/
-.nitro/
-**/.nitro/
-.output/
-**/.output/
-.data/
-**/.data/
-.cache/
-**/.cache/
-dist/
-**/dist/
-
-# --- Expo ---
-.expo/
-**/.expo/
-web-build/
-expo-env.d.ts
-
-# --- Go / Air ---
-tmp/
-**/tmp/
-bin/
-**/bin/
-*.test
-
-# --- Env files (rahasia! jangan pernah commit) ---
 .env
 .env.*
 !.env.example
-*.env.local
+!**/.env.example
 
-# --- Logs ---
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+.envrc
+.direnv/
+
+secrets/
+**/secrets/
+
+.secret/
+**/.secret/
+
+credentials/
+**/credentials/
+
+*.secret
+*.secrets
+
+
+# ============================================================
+# PRIVATE KEYS / CERTIFICATES
+# ============================================================
+
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+
+*.kubeconfig
+
+infra/**/certs/
+infra/**/certificates/
+infra/**/private/
+
+certs/
+certificates/
+
+
+# ============================================================
+# NODE.JS
+# Nuxt / Hono / Expo / TypeScript
+# ============================================================
+
+node_modules/
+**/node_modules/
+
+.pnpm-store/
+**/.pnpm-store/
+
+.npm/
+**/.npm/
+
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+.npmrc.local
+.pnpmfile.local.cjs
+
+
+# ============================================================
+# NODE BUILD / CACHE
+# ============================================================
+
+.cache/
+**/.cache/
+
+.parcel-cache/
+**/.parcel-cache/
+
+.turbo/
+**/.turbo/
+
+.eslintcache
+**/.eslintcache
+
+.stylelintcache
+**/.stylelintcache
+
+*.tsbuildinfo
+
+coverage/
+**/coverage/
+
+.nyc_output/
+**/.nyc_output/
+
+
+# ============================================================
+# NUXT 4
+# ============================================================
+
+.nuxt/
+**/.nuxt/
+
+.output/
+**/.output/
+
+.nitro/
+**/.nitro/
+
+.data/
+**/.data/
+
+.nuxt-build/
+**/.nuxt-build/
+
+.nuxt-dev/
+**/.nuxt-dev/
+
+
+# ============================================================
+# VITE / VUE
+# ============================================================
+
+.vite/
+**/.vite/
+
+vite.config.*.timestamp-*
+vite.config.*.mjs
+
+
+# ============================================================
+# PRISMA
+# ============================================================
+
+# Generated Prisma client.
+# prisma/schema.prisma & prisma/migrations TETAP di-track.
+
+.prisma/
+**/.prisma/
+
+src/generated/prisma/
+**/src/generated/prisma/
+
+generated/prisma/
+**/generated/prisma/
+
+# SQLite local DB jika dipakai untuk test/dev
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+
+
+# ============================================================
+# EXPO / REACT NATIVE
+# ============================================================
+
+.expo/
+**/.expo/
+
+.expo-shared/
+**/.expo-shared/
+
+web-build/
+**/web-build/
+
+expo-env.d.ts
+
+.metro-health-check*
+.metro-cache/
+**/.metro-cache/
+
+.react-native/
+**/.react-native/
+
+# EAS local output
+eas-build-local-nodejs/
+eas-build-local-runner/
+**/eas-build-local-nodejs/
+**/eas-build-local-runner/
+
+# Expo export
+dist-expo/
+**/dist-expo/
+
+
+# ============================================================
+# IMPORTANT EXPO NOTE
+# ============================================================
+#
+# android/ dan ios/ TIDAK di-ignore secara default.
+#
+# Jika project 100% Expo Managed + Continuous Native Generation
+# dan TIDAK melakukan native modification, baru boleh pakai:
+#
+# android/
+# ios/
+#
+# Jangan aktifkan kalau ada native code/config custom.
+
+
+# ============================================================
+# PYTHON
+# FastAPI / AI / LangGraph / Haystack / NeuralForecast
+# ============================================================
+
+.venv/
+**/.venv/
+
+venv/
+**/venv/
+
+env/
+**/env/
+
+__pycache__/
+**/__pycache__/
+
+*.py[cod]
+*$py.class
+
+.pytest_cache/
+**/.pytest_cache/
+
+.mypy_cache/
+**/.mypy_cache/
+
+.ruff_cache/
+**/.ruff_cache/
+
+.pyright/
+**/.pyright/
+
+.hypothesis/
+**/.hypothesis/
+
+.tox/
+**/.tox/
+
+.nox/
+**/.nox/
+
+.coverage
+.coverage.*
+htmlcov/
+**/htmlcov/
+
+pip-wheel-metadata/
+
+*.egg-info/
+**/*.egg-info/
+
+.eggs/
+**/.eggs/
+
+wheels/
+**/wheels/
+
+MANIFEST
+
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+
+# ============================================================
+# PYTHON / ML MODEL CACHE
+# ============================================================
+
+# Local downloaded ML models/datasets
+models/
+**/models/
+
+model_cache/
+**/model_cache/
+
+checkpoints/
+**/checkpoints/
+
+*.ckpt
+*.pth
+*.pt
+*.onnx
+
+huggingface/
+**/huggingface/
+
+.huggingface/
+**/.huggingface/
+
+transformers_cache/
+**/transformers_cache/
+
+torch_cache/
+**/torch_cache/
+
+
+# ============================================================
+# DATASETS / LOCAL AI ARTIFACTS
+# ============================================================
+
+datasets/
+**/datasets/
+
+artifacts/
+**/artifacts/
+
+local-data/
+**/local-data/
+
+runtime-data/
+**/runtime-data/
+
+uploads/
+**/uploads/
+
+downloads/
+**/downloads/
+
+temp/
+**/temp/
+
+
+# ============================================================
+# GO
+# telemetry_worker / Gin
+# ============================================================
+
+tmp/
+**/tmp/
+
+bin/
+**/bin/
+
+*.test
+*.out
+
+coverage.out
+coverage.html
+
+*.prof
+*.pprof
+
+go.work.sum.local
+
+# Delve debugger
+__debug_bin
+__debug_bin*
+
+# Air
+.air.toml.local
+
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+
+# ============================================================
+# GENERAL BUILD OUTPUT
+# ============================================================
+
+dist/
+**/dist/
+
+build/
+**/build/
+
+out/
+**/out/
+
+target/
+**/target/
+
+release/
+**/release/
+
+
+# ============================================================
+# DOCKER LOCAL OVERRIDES
+# ============================================================
+
+docker-compose.local.yml
+docker-compose.local.yaml
+
+compose.local.yml
+compose.local.yaml
+
+docker-compose.override.local.yml
+docker-compose.override.local.yaml
+
+Dockerfile.local
+
+
+# ============================================================
+# DOCKER RUNTIME DATA
+# ============================================================
+
+.docker/
+**/.docker/
+
+docker-data/
+**/docker-data/
+
+docker-volumes/
+**/docker-volumes/
+
+volumes/
+**/volumes/
+
+
+# ============================================================
+# POSTGRESQL / TIMESCALEDB LOCAL DATA
+# ============================================================
+
+postgres-data/
+postgres_data/
+postgresql-data/
+postgresql_data/
+
+**/postgres-data/
+**/postgres_data/
+**/postgresql-data/
+**/postgresql_data/
+
+pgdata/
+**/pgdata/
+
+.pgdata/
+**/.pgdata/
+
+# PostgreSQL dump / backups
+*.dump
+*.dump.gz
+*.sql.gz
+*.backup
+*.backup.gz
+
+backups/
+**/backups/
+
+backup/
+**/backup/
+
+
+# ============================================================
+# REDIS LOCAL DATA
+# ============================================================
+
+redis-data/
+redis_data/
+
+**/redis-data/
+**/redis_data/
+
+dump.rdb
+**/dump.rdb
+
+appendonly.aof
+**/appendonly.aof
+
+appendonlydir/
+**/appendonlydir/
+
+
+# ============================================================
+# QDRANT LOCAL DATA
+# ============================================================
+
+qdrant-data/
+qdrant_data/
+
+qdrant-storage/
+qdrant_storage/
+
+**/qdrant-data/
+**/qdrant_data/
+
+**/qdrant-storage/
+**/qdrant_storage/
+
+qdrant/snapshots/
+**/qdrant/snapshots/
+
+*.snapshot
+
+
+# ============================================================
+# MINIO / S3 DEV STORAGE
+# ============================================================
+
+minio-data/
+minio_data/
+
+**/minio-data/
+**/minio_data/
+
+.minio.sys/
+**/.minio.sys/
+
+
+# ============================================================
+# MOSQUITTO / MQTT RUNTIME
+# ============================================================
+
+mosquitto-data/
+mosquitto_data/
+
+**/mosquitto-data/
+**/mosquitto_data/
+
+mosquitto-log/
+mosquitto_logs/
+
+**/mosquitto-log/
+**/mosquitto_logs/
+
+mosquitto.db
+**/mosquitto.db
+
+# Password database generated by mosquitto_passwd
+mosquitto/passwords
+**/mosquitto/passwords
+
+mosquitto/passwd
+**/mosquitto/passwd
+
+
+# ============================================================
+# PROMETHEUS RUNTIME DATA
+# ============================================================
+
+prometheus-data/
+prometheus_data/
+
+**/prometheus-data/
+**/prometheus_data/
+
+prometheus/wal/
+**/prometheus/wal/
+
+
+# ============================================================
+# GRAFANA RUNTIME DATA
+# ============================================================
+
+grafana-data/
+grafana_data/
+
+**/grafana-data/
+**/grafana_data/
+
+grafana.db
+**/grafana.db
+
+grafana/plugins/
+**/grafana/plugins/
+
+
+# ============================================================
+# LOKI RUNTIME DATA
+# ============================================================
+
+loki-data/
+loki_data/
+
+**/loki-data/
+**/loki_data/
+
+loki/chunks/
+loki/index/
+loki/compactor/
+loki/wal/
+
+**/loki/chunks/
+**/loki/index/
+**/loki/compactor/
+**/loki/wal/
+
+
+# ============================================================
+# GRAFANA ALLOY RUNTIME DATA
+# ============================================================
+
+alloy-data/
+alloy_data/
+
+**/alloy-data/
+**/alloy_data/
+
+.alloy/
+**/.alloy/
+
+
+# ============================================================
+# APPLICATION LOGS
+# ============================================================
+
 logs/
+**/logs/
+
+log/
+**/log/
+
 *.log
+*.log.*
+
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
+yarn-error.log*
 
-# --- OS / editor ---
-.DS_Store
+debug.log
+error.log
+
+
+# ============================================================
+# PID / SOCKET / RUNTIME FILES
+# ============================================================
+
+*.pid
+*.pid.lock
+*.sock
+*.socket
+
+run/
+**/run/
+
+runtime/
+**/runtime/
+
+
+# ============================================================
+# TEMPORARY FILES
+# ============================================================
+
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.old
+*.orig
+
+*~
+~*
+
+.tmp/
+**/.tmp/
+
+.temp/
+**/.temp/
+
+
+# ============================================================
+# TEST OUTPUT
+# ============================================================
+
+test-results/
+**/test-results/
+
+playwright-report/
+**/playwright-report/
+
+blob-report/
+**/blob-report/
+
+test-output/
+**/test-output/
+
+junit.xml
+
+coverage.xml
+
+
+# ============================================================
+# PLAYWRIGHT
+# ============================================================
+
+playwright/.cache/
+**/playwright/.cache/
+
+playwright-report/
+**/playwright-report/
+
+test-results/
+**/test-results/
+
+
+# ============================================================
+# SENTRY
+# ============================================================
+
+.sentryclirc
+
+sentry.properties
+**/sentry.properties
+
+.sentry/
+**/.sentry/
+
+
+# ============================================================
+# KUBERNETES LOCAL
+# ============================================================
+
+.kube/
+**/.kube/
+
+kubeconfig
+kubeconfig.*
+*.kubeconfig
+
+# Helm generated packages
+*.tgz
+
+# Do NOT ignore:
+# deploy/kubernetes/**
+# charts/**
+# values.yaml
+# values-dev.yaml
+# values-prod.yaml
+
+
+# ============================================================
+# TERRAFORM / OPENTOFU
+# ============================================================
+
+.terraform/
+**/.terraform/
+
+.terraform.lock.hcl
+# NOTE:
+# Jika Terraform/OpenTofu dipakai serius dalam team,
+# sebaiknya .terraform.lock.hcl justru di-track.
+# Hapus rule di atas saat mulai menggunakan IaC production.
+
+*.tfstate
+*.tfstate.*
+
+crash.log
+crash.*.log
+
+override.tf
+override.tf.json
+
+*_override.tf
+*_override.tf.json
+
+.terraformrc
+terraform.rc
+
+.tofu/
+**/.tofu/
+
+
+# ============================================================
+# AWS
+# ============================================================
+
+.aws/
+**/.aws/
+
+aws-credentials
+credentials.csv
+
+*.aws-credentials
+
+
+# ============================================================
+# GOOGLE / THIRD-PARTY CREDENTIALS
+# ============================================================
+
+service-account.json
+service-account-*.json
+
+google-credentials.json
+google-service-account.json
+
+firebase-adminsdk-*.json
+
+credentials.json
+
+client_secret*.json
+
+
+# ============================================================
+# LOCAL API TOKENS / KEYS
+# ============================================================
+
+*.token
+*.tokens
+
+api-key.txt
+api-keys.txt
+
+token.txt
+tokens.txt
+
+
+# ============================================================
+# IDE / EDITOR
+# ============================================================
+
 .idea/
+**/.idea/
+
 .fleet/
+**/.fleet/
 
-# --- TypeScript ---
-*.tsbuildinfo
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
 
-# brainstorm visual companion
+.history/
+**/.history/
+
+.project
+.classpath
+
+.settings/
+**/.settings/
+
+
+# ============================================================
+# ZED / CURSOR / WINDSURF
+# ============================================================
+
+.zed/
+.cursor/
+.windsurf/
+
+**/.zed/
+**/.cursor/
+**/.windsurf/
+
+
+# ============================================================
+# MACOS
+# ============================================================
+
+.DS_Store
+**/.DS_Store
+
+.AppleDouble
+.LSOverride
+
+Icon?
+
+._*
+
+
+# ============================================================
+# WINDOWS
+# ============================================================
+
+Thumbs.db
+Thumbs.db:encryptable
+
+ehthumbs.db
+ehthumbs_vista.db
+
+Desktop.ini
+
+$RECYCLE.BIN/
+
+
+# ============================================================
+# LINUX
+# ============================================================
+
+.directory
+
+.Trash-*
+.nfs*
+
+
+# ============================================================
+# SUPERPOWERS / BRAINSTORM VISUAL COMPANION
+# ============================================================
+
 .superpowers/
+**/.superpowers/
+
+
+# ============================================================
+# LOCAL NOTES / SCRATCH
+# ============================================================
+
+scratch/
+**/scratch/
+
+.local/
+**/.local/
+
+private/
+**/private/
+
+notes.local.*
+*.local.md
+
+
+# ============================================================
+# DO NOT IGNORE THESE IMPORTANT FILES
+# ============================================================
+
+!pnpm-lock.yaml
+!**/pnpm-lock.yaml
+
+!uv.lock
+!**/uv.lock
+
+!go.sum
+!**/go.sum
+
+!go.mod
+!**/go.mod
+
+!prisma/schema.prisma
+!**/prisma/schema.prisma
+
+!prisma/migrations/
+!**/prisma/migrations/
+
+!.env.example
+!**/.env.example

@@ -58,6 +58,11 @@ docs/                    arsitektur + plan
     (node_modules/.venv/go mod cache) — hot reload via bind mount source.
 11. Nginx upstream variable berisi `host:port` TANPA scheme; strip prefix pakai
     `rewrite ^/x/(.*)$ /$1 break;` (proxy_pass variable tidak strip otomatis).
+12. **Dilarang menulis komentar di dalam kode** (TS, Python, Go, YAML, Dockerfile,
+    konfigurasi, dll). Nama variabel/fungsi/struktur harus sudah menjelaskan
+    diri sendiri. Dokumentasi ditulis di `docs/` atau file `.md`, bukan di
+    kode. Ini berlaku untuk SEMUA kode baru atau modifikasi ke depan; kode lama
+    yang masih berkomentar boleh dibersihkan bertahap, bukan kewajiban segera.
 
 ## Service health endpoints
 

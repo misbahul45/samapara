@@ -8,11 +8,24 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.1.0",
-    "hono": "^4.13.0"
+    "@hono/zod-validator": "^0.9.0",
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "dotenv": "^17.4.2",
+    "hono": "^4.13.0",
+    "pg": "^8.22.0",
+    "redis": "^6.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",
+    "@types/pg": "^8.20.4",
+    "prisma": "^7.9.1",
     "tsx": "^4.23.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  },
+  "pnpm": {
+    "verifyDepsBeforeRun": false
   }
 }

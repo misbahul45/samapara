@@ -1,15 +1,31 @@
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { buildApp } from './app.js'
+import { getEnv } from './config/env.js'
+import { connectRedis, disconnectRedis } from './lib/redis.js'
+import { prisma } from './lib/prisma.js'
 
-const app = new Hono()
+const env = getEnv()
+const app = buildApp()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
+try {
+  await prisma.$connect()
+  await connectRedis()
+} catch (err) {
+  console.error('api_platform startup failed:', err)
+  process.exit(1)
+}
+
+const server = serve({ fetch: app.fetch, port: env.port }, (info) => {
+  console.log(`api_platform listening on http://localhost:${info.port}`)
 })
 
-serve({
-  fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
+async function shutdown() {
+  console.log('api_platform shutting down')
+  server.close(async () => {
+    await disconnectRedis()
+    await prisma.$disconnect()
+  })
+}
+
+process.on('SIGTERM', () => void shutdown())
+process.on('SIGINT', () => void shutdown())

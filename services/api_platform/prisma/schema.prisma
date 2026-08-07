@@ -1,0 +1,90 @@
+// SAMAPARA — Prisma schema
+// Hanya mengelola schema public + gold (business data).
+// bronze/silver (Timescale hypertables) DILUAR Prisma — diurus
+// SQL init + worker Python.
+//
+// URL tidak ditulis di sini (Prisma 7): lihat prisma.config.ts.
+// NOTE: Prisma 7.9 menolak list multi-line di datasource — inline only.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["gold", "public"]
+}
+
+model forecasts {
+  id                  BigInt   @id @default(autoincrement())
+  device_id           String   @db.Uuid
+  forecast_for        DateTime @db.Timestamptz(6)
+  p50                 Float?
+  p80                 Float?
+  p90                 Float?
+  predicted_weight_kg Float?
+  risk_level          String?
+  model_name          String?
+  model_version       String?
+  created_at          DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([device_id, forecast_for(sort: Desc)], map: "idx_forecast_device_time")
+  @@schema("gold")
+}
+
+model shipments {
+  id                     String    @id @db.Uuid
+  status                 String
+  estimated_weight_kg    Float?
+  planned_start          DateTime? @db.Timestamptz(6)
+  route_distance_meters  BigInt?
+  route_duration_seconds BigInt?
+  route                  Json?
+  created_at             DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime  @default(now()) @db.Timestamptz(6)
+
+  @@schema("gold")
+}
+
+model ai_audit_logs {
+  id          BigInt   @id @default(autoincrement())
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  actor_type  String
+  agent_name  String?
+  action      String
+  input       Json?
+  output      Json?
+  approved    Boolean?
+  approved_by String?
+
+  @@schema("public")
+}
+
+model devices {
+  id            String   @id @db.Uuid
+  serial_number String   @unique
+  name          String
+  location_name String?
+  latitude      Float?
+  longitude     Float?
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @default(now()) @db.Timestamptz(6)
+  active        Boolean  @default(true)
+
+  @@index([active], map: "idx_devices_active")
+  @@schema("public")
+}
+
+model users {
+  id            String   @id @db.Uuid
+  name          String
+  email         String   @unique
+  password_hash String
+  role          String   @default("OPERATOR")
+  active        Boolean  @default(true)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([role], map: "idx_users_role")
+  @@schema("public")
+}

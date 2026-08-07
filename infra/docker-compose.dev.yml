@@ -37,13 +37,17 @@ services:
       NODE_ENV: development
       PORT: 3000
       HOST: 0.0.0.0
+      CI: 'true'
+      PNPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
     volumes:
       - ../apps/samapara_controll:/app
       - controll_node_modules:/app/node_modules
     networks:
       - samapara_net
 
-  # ---------- services/api_platform (Hono/TS) ----------
+  # ---------- services/api_platform (Hono/TS) — PUBLIC API BOUNDARY ----------
+  # Satu-satunya service app yang bicara dengan PostgreSQL via Prisma.
+  # Go/Python TIDAK di-expose publik — hanya internal network.
   api_platform:
     build:
       context: ../services/api_platform
@@ -53,6 +57,18 @@ services:
       - ../.env
     environment:
       NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_APP_USER}:${POSTGRES_APP_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      DECISION_ENGINE_URL: http://decision_engine:8000
+      TELEMETRY_WORKER_URL: http://telemetry_worker:8080
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+      PUBLIC_ORIGIN: ${PUBLIC_ORIGIN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - ../services/api_platform:/app
       - api_platform_node_modules:/app/node_modules
@@ -60,6 +76,8 @@ services:
       - samapara_net
 
   # ---------- services/decision_engine (Python/FastAPI + uv) ----------
+  # Internal-only (TIDAK lewat nginx). Consumer Redis Streams -> bronze/silver
+  # (role samapara_ai), forecast -> gold.forecasts, RAG -> Qdrant.
   decision_engine:
     build:
       context: ../services/decision_engine
@@ -69,13 +87,61 @@ services:
       - ../.env
     environment:
       PYTHONUNBUFFERED: "1"
+      DATABASE_URL: postgresql://${POSTGRES_AI_USER}:${POSTGRES_AI_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_API_KEY: ${QDRANT_API_KEY}
+      QDRANT_COLLECTION: ${QDRANT_COLLECTION}
+      API_PLATFORM_URL: http://api_platform:3000
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
     volumes:
       - ../services/decision_engine:/app
       - decision_venv:/app/.venv
     networks:
       - samapara_net
 
-  # ---------- services/telemetry_worker (Go/Gin) ----------
+  # ---------- decision_worker (Python consumer Redis Streams) ----------
+  # Proses terpisah dari API (arah k8s: Deployment sendiri).
+  # Baca stream:telemetry -> bronze/silver -> XACK.
+  decision_worker:
+    build:
+      context: ../services/decision_engine
+      dockerfile: Dockerfile.dev
+    container_name: samapara_decision_worker_dev
+    env_file:
+      - ../.env
+    environment:
+      PYTHONUNBUFFERED: "1"
+      DATABASE_URL: postgresql://${POSTGRES_AI_USER}:${POSTGRES_AI_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_API_KEY: ${QDRANT_API_KEY}
+      QDRANT_COLLECTION: ${QDRANT_COLLECTION}
+      API_PLATFORM_URL: http://api_platform:3000
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+    command: ["uv", "run", "python", "-m", "decision_engine.workers.telemetry"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../services/decision_engine:/app
+      - decision_venv:/app/.venv
+    networks:
+      - samapara_net
+  # Internal-only (TIDAK lewat nginx). MQTT -> registry (Redis cache +
+  # PostgreSQL READ ONLY fallback) -> dedup Lua + XADD stream:telemetry.
+  # ---------- services/telemetry_worker (Go/Gin) — INGESTOR ----------
+  # Internal-only (TIDAK lewat nginx). MQTT -> registry (Redis cache +
+  # PostgreSQL READ ONLY fallback) -> dedup Lua + XADD stream:telemetry.
   telemetry_worker:
     build:
       context: ../services/telemetry_worker
@@ -84,7 +150,20 @@ services:
     env_file:
       - ../.env
     environment:
-      GIN_MODE: debug
+      GIN_MODE: release
+      PORT: 8080
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      GO_DATABASE_URL: postgresql://${POSTGRES_INGESTOR_USER}:${POSTGRES_INGESTOR_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      MQTT_BROKER: tcp://mosquitto:1883
+      MQTT_CLIENT_ID: samapara-telemetry-worker
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
     volumes:
       - ../services/telemetry_worker:/app
       - go_mod_cache:/go/pkg/mod
@@ -98,8 +177,6 @@ services:
     depends_on:
       - controll
       - api_platform
-      - decision_engine
-      - telemetry_worker
     ports:
       - "127.0.0.1:${GATEWAY_PORT:-8090}:80"
     volumes:
@@ -119,6 +196,15 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Role least-privilege — dibaca 003-roles.sh saat init volume BARU
+      POSTGRES_OWNER_USER: ${POSTGRES_OWNER_USER}
+      POSTGRES_OWNER_PASSWORD: ${POSTGRES_OWNER_PASSWORD}
+      POSTGRES_APP_USER: ${POSTGRES_APP_USER}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD}
+      POSTGRES_INGESTOR_USER: ${POSTGRES_INGESTOR_USER}
+      POSTGRES_INGESTOR_PASSWORD: ${POSTGRES_INGESTOR_PASSWORD}
+      POSTGRES_AI_USER: ${POSTGRES_AI_USER}
+      POSTGRES_AI_PASSWORD: ${POSTGRES_AI_PASSWORD}
     command:
       - postgres
       - -c

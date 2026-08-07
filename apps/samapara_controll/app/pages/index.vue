@@ -1,76 +1,79 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { ColumnDef } from '@tanstack/vue-table'
+import { useDevicesQuery } from '~/queries/useDevicesQuery'
+
+const { data, isPending, isError, error, refetch } = useDevicesQuery()
+
+interface DeviceRow {
+  id: string
+  name: string
+  serial_number: string
+  location_name: string
+  active: string
+  created_at: string
+}
+
+const columns: ColumnDef<DeviceRow, unknown>[] = [
+  { id: 'name', accessorFn: row => row.name, header: 'Nama' },
+  { id: 'serial_number', accessorFn: row => row.serial_number, header: 'Serial' },
+  { id: 'location_name', accessorFn: row => row.location_name, header: 'Lokasi' },
+  { id: 'active', accessorFn: row => row.active, header: 'Status' },
+  { id: 'created_at', accessorFn: row => row.created_at, header: 'Dibuat' }
+]
+
+const rows = computed<DeviceRow[]>(() =>
+  (data.value?.devices ?? []).map(device => ({
+    id: device.id,
+    name: device.name,
+    serial_number: device.serial_number,
+    location_name: device.location_name ?? '-',
+    active: device.active ? 'Aktif' : 'Nonaktif',
+    created_at: new Date(device.created_at).toLocaleString('id-ID')
+  }))
+)
+</script>
+
 <template>
-  <div>
-    <UPageHero
-      title="Nuxt Starter Template"
-      description="A production-ready starter template powered by Nuxt UI. Build beautiful, accessible, and performant applications in minutes, not hours."
-      :links="[{
-        label: 'Get started',
-        to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
-        target: '_blank',
-        trailingIcon: 'i-lucide-arrow-right',
-        size: 'xl'
-      }, {
-        label: 'Use this template',
-        to: 'https://github.com/nuxt-ui-templates/starter',
-        target: '_blank',
-        icon: 'i-simple-icons-github',
-        size: 'xl',
-        color: 'neutral',
-        variant: 'subtle'
-      }]"
-    />
+  <UPage>
+    <UPageHeader
+      title="Devices"
+      description="Daftar container pintar dari telemetry SAMAPARA"
+    >
+      <template #right>
+        <UButton
+          icon="i-lucide-refresh-cw"
+          label="Muat ulang"
+          color="neutral"
+          variant="outline"
+          :loading="isPending"
+          @click="() => refetch()"
+        />
+      </template>
+    </UPageHeader>
 
-    <UPageSection
-      id="features"
-      title="Everything you need to build modern Nuxt apps"
-      description="Start with a solid foundation. This template includes all the essentials for building production-ready applications with Nuxt UI's powerful component system."
-      :features="[{
-        icon: 'i-lucide-rocket',
-        title: 'Production-ready from day one',
-        description: 'Pre-configured with TypeScript, ESLint, Tailwind CSS, and all the best practices. Focus on building features, not setting up tooling.'
-      }, {
-        icon: 'i-lucide-palette',
-        title: 'Beautiful by default',
-        description: 'Leveraging Nuxt UI\'s design system with automatic dark mode, consistent spacing, and polished components that look great out of the box.'
-      }, {
-        icon: 'i-lucide-zap',
-        title: 'Lightning fast',
-        description: 'Optimized for performance with SSR/SSG support, automatic code splitting, and edge-ready deployment. Your users will love the speed.'
-      }, {
-        icon: 'i-lucide-blocks',
-        title: '100+ components included',
-        description: 'Access Nuxt UI\'s comprehensive component library. From forms to navigation, everything is accessible, responsive, and customizable.'
-      }, {
-        icon: 'i-lucide-code-2',
-        title: 'Developer experience first',
-        description: 'Auto-imports, hot module replacement, and TypeScript support. Write less boilerplate and ship more features.'
-      }, {
-        icon: 'i-lucide-shield-check',
-        title: 'Built for scale',
-        description: 'Enterprise-ready architecture with proper error handling, SEO optimization, and security best practices built-in.'
-      }]"
-    />
-
-    <UPageSection>
-      <UPageCTA
-        title="Ready to build your next Nuxt app?"
-        description="Join thousands of developers building with Nuxt and Nuxt UI. Get this template and start shipping today."
-        variant="subtle"
-        :links="[{
-          label: 'Start building',
-          to: 'https://ui.nuxt.com/docs/getting-started/installation/nuxt',
-          target: '_blank',
-          trailingIcon: 'i-lucide-arrow-right',
-          color: 'neutral'
-        }, {
-          label: 'View on GitHub',
-          to: 'https://github.com/nuxt-ui-templates/starter',
-          target: '_blank',
-          icon: 'i-simple-icons-github',
-          color: 'neutral',
-          variant: 'outline'
-        }]"
+    <UPageBody>
+      <UAlert
+        v-if="isError"
+        color="error"
+        icon="i-lucide-alert-triangle"
+        title="Gagal memuat devices"
+        :description="String(error ?? '')"
       />
-    </UPageSection>
-  </div>
+
+      <UTable
+        v-else
+        :data="rows"
+        :columns="columns"
+        :loading="isPending"
+        :empty-state="{ icon: 'i-lucide-box', label: 'Belum ada device' }"
+      >
+        <template #name-cell="{ row }">
+          <div class="font-medium">
+            {{ row.original.name }}
+          </div>
+        </template>
+      </UTable>
+    </UPageBody>
+  </UPage>
 </template>
