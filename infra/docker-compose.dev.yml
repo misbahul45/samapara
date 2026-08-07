@@ -1,23 +1,3 @@
-# ============================================================
-# SAMPARA — Docker development compose
-# Pola: infra/docker-compose.dev.yml (bemunair2026) — dev-focused,
-# hot reload via bind mount source + named volume dependency.
-#
-# Jalankan DARI ROOT REPO:
-#   docker compose --env-file .env -f infra/docker-compose.dev.yml up -d --build
-# atau lebih mudah:  infra/dev.sh up
-#
-# Catatan:
-# - Source di-bind mount (edit file langsung ke container, hot reload)
-# - node_modules/.venv/go mod cache pakai NAMED VOLUME agar dependency
-#   container tidak tertimpa isi folder host.
-# - GATEWAY-ONLY: hanya nginx (infra/nginx/nginx.dev.conf) yang di-publish
-#   ke host. Semua service hanya di internal network samapara_net.
-#   Akses: http://localhost:8090/  (lihat route table di nginx.dev.conf)
-# - samapara_drive (Expo) TIDAK ada di sini — jalan di host + Expo Go
-#   (pola mobile app di Greenly: tidak di-docker).
-# ============================================================
-
 name: samapara-dev
 
 networks:
@@ -25,7 +5,6 @@ networks:
     driver: bridge
 
 services:
-  # ---------- apps/samapara_controll (Nuxt 4 web) ----------
   controll:
     build:
       context: ../apps/samapara_controll
@@ -37,17 +16,14 @@ services:
       NODE_ENV: development
       PORT: 3000
       HOST: 0.0.0.0
-      CI: 'true'
-      PNPM_CONFIG_CONFIRM_MODULES_PURGE: 'false'
+      CI: "true"
+      PNPM_CONFIG_CONFIRM_MODULES_PURGE: "false"
     volumes:
       - ../apps/samapara_controll:/app
       - controll_node_modules:/app/node_modules
     networks:
       - samapara_net
 
-  # ---------- services/api_platform (Hono/TS) — PUBLIC API BOUNDARY ----------
-  # Satu-satunya service app yang bicara dengan PostgreSQL via Prisma.
-  # Go/Python TIDAK di-expose publik — hanya internal network.
   api_platform:
     build:
       context: ../services/api_platform
@@ -75,9 +51,6 @@ services:
     networks:
       - samapara_net
 
-  # ---------- services/decision_engine (Python/FastAPI + uv) ----------
-  # Internal-only (TIDAK lewat nginx). Consumer Redis Streams -> bronze/silver
-  # (role samapara_ai), forecast -> gold.forecasts, RAG -> Qdrant.
   decision_engine:
     build:
       context: ../services/decision_engine
@@ -107,9 +80,6 @@ services:
     networks:
       - samapara_net
 
-  # ---------- decision_worker (Python consumer Redis Streams) ----------
-  # Proses terpisah dari API (arah k8s: Deployment sendiri).
-  # Baca stream:telemetry -> bronze/silver -> XACK.
   decision_worker:
     build:
       context: ../services/decision_engine
@@ -126,7 +96,12 @@ services:
       QDRANT_COLLECTION: ${QDRANT_COLLECTION}
       API_PLATFORM_URL: http://api_platform:3000
       INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
-    command: ["uv", "run", "python", "-m", "decision_engine.workers.telemetry"]
+    command:
+      - uv
+      - run
+      - python
+      - -m
+      - decision_engine.workers.telemetry
     depends_on:
       postgres:
         condition: service_healthy
@@ -137,11 +112,7 @@ services:
       - decision_venv:/app/.venv
     networks:
       - samapara_net
-  # Internal-only (TIDAK lewat nginx). MQTT -> registry (Redis cache +
-  # PostgreSQL READ ONLY fallback) -> dedup Lua + XADD stream:telemetry.
-  # ---------- services/telemetry_worker (Go/Gin) — INGESTOR ----------
-  # Internal-only (TIDAK lewat nginx). MQTT -> registry (Redis cache +
-  # PostgreSQL READ ONLY fallback) -> dedup Lua + XADD stream:telemetry.
+
   telemetry_worker:
     build:
       context: ../services/telemetry_worker
@@ -170,7 +141,6 @@ services:
     networks:
       - samapara_net
 
-  # ---------- Gateway: satu-satunya entry point ke semua service ----------
   nginx:
     image: nginx:alpine
     container_name: samapara_nginx_dev
@@ -184,11 +154,6 @@ services:
     networks:
       - samapara_net
 
-  # ============================================================
-  # INFRA: PostgreSQL + TimescaleDB (SATU service — TimescaleDB
-  # adalah extension PostgreSQL, bukan DB terpisah. Schema
-  # bronze/silver/gold di dalam satu database samapara.)
-  # ============================================================
   postgres:
     image: timescale/timescaledb:latest-pg17
     container_name: samapara_postgres_dev
@@ -196,7 +161,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      # Role least-privilege — dibaca 003-roles.sh saat init volume BARU
       POSTGRES_OWNER_USER: ${POSTGRES_OWNER_USER}
       POSTGRES_OWNER_PASSWORD: ${POSTGRES_OWNER_PASSWORD}
       POSTGRES_APP_USER: ${POSTGRES_APP_USER}
@@ -223,7 +187,9 @@ services:
       - postgres_dev_data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
       interval: 5s
       timeout: 5s
       retries: 20
@@ -231,7 +197,6 @@ services:
     networks:
       - samapara_net
 
-  # ---------- Redis (Streams untuk queue; bukan BullMQ/Kafka) ----------
   redis:
     image: redis:8.8.0-alpine
     container_name: samapara_redis_dev
@@ -250,7 +215,12 @@ services:
     volumes:
       - redis_dev_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "PING"]
+      test:
+        - CMD
+        - redis-cli
+        - -a
+        - ${REDIS_PASSWORD}
+        - PING
       interval: 5s
       timeout: 3s
       retries: 20
@@ -258,7 +228,6 @@ services:
     networks:
       - samapara_net
 
-  # ---------- Qdrant 1.18+ (vector DB, TurboQuant native) ----------
   qdrant:
     image: qdrant/qdrant:v1.18.1
     container_name: samapara_qdrant_dev
@@ -275,7 +244,6 @@ services:
     networks:
       - samapara_net
 
-  # ---------- MQTT broker (dev: anonymous; prod: TLS + password) ----------
   mosquitto:
     image: eclipse-mosquitto:2
     container_name: samapara_mosquitto_dev
@@ -288,11 +256,14 @@ services:
     networks:
       - samapara_net
 
-  # ---------- MinIO (HANYA dev; production pakai S3 eksternal) ----------
   minio:
     image: minio/minio:latest
     container_name: samapara_minio_dev
-    command: server /data --console-address ":9001"
+    command:
+      - server
+      - /data
+      - --console-address
+      - ":9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
@@ -305,7 +276,6 @@ services:
     networks:
       - samapara_net
 
-  # ---------- Monitoring: eksporter + Prometheus + Loki + Alloy + Grafana ----------
   postgres-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter:v0.19.1
     container_name: samapara_postgres_exporter_dev
@@ -352,7 +322,6 @@ services:
     networks:
       - samapara_net
 
-  # Grafana Alloy (pengganti Promtail yang sudah EOL) — kolektor log docker
   alloy:
     image: grafana/alloy:v1.18.0
     container_name: samapara_alloy_dev
@@ -371,8 +340,6 @@ services:
       - samapara_net
 
   cadvisor:
-    # CATATAN: gcr.io belum menyediakan tag v0.60.x (release baru hanya
-    # binary GitHub). latest saat ini = v0.55.1 — cukup untuk dev metrics.
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: samapara_cadvisor_dev
     privileged: true
