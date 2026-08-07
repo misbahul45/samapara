@@ -1,0 +1,103 @@
+# ============================================================
+# SAMPARA — Docker development compose
+# Pola: infra/docker-compose.dev.yml (bemunair2026) — dev-focused,
+# hot reload via bind mount source + named volume dependency.
+#
+# Jalankan DARI ROOT REPO:
+#   docker compose --env-file .env -f infra/docker-compose.dev.yml up -d --build
+# atau lebih mudah:  infra/dev.sh up
+#
+# Catatan:
+# - Source di-bind mount (edit file langsung ke container, hot reload)
+# - node_modules/.venv/go mod cache pakai NAMED VOLUME agar dependency
+#   container tidak tertimpa isi folder host.
+# - samapara_drive (Expo) TIDAK ada di sini — jalan di host + Expo Go
+#   (pola mobile app di Greenly: tidak di-docker).
+# ============================================================
+
+name: samapara-dev
+
+networks:
+  samapara_net:
+    driver: bridge
+
+services:
+  # ---------- apps/samapara_controll (Nuxt 4 web) ----------
+  controll:
+    build:
+      context: ../apps/samapara_controll
+      dockerfile: Dockerfile.dev
+    container_name: samapara_controll_dev
+    env_file:
+      - ../.env
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      HOST: 0.0.0.0
+    ports:
+      - "${CONTROLL_PORT:-3100}:3000"
+    volumes:
+      - ../apps/samapara_controll:/app
+      - controll_node_modules:/app/node_modules
+    networks:
+      - samapara_net
+
+  # ---------- services/api_platform (Hono/TS) ----------
+  api_platform:
+    build:
+      context: ../services/api_platform
+      dockerfile: Dockerfile.dev
+    container_name: samapara_api_platform_dev
+    env_file:
+      - ../.env
+    environment:
+      NODE_ENV: development
+    ports:
+      - "${API_PLATFORM_PORT:-3200}:3000"
+    volumes:
+      - ../services/api_platform:/app
+      - api_platform_node_modules:/app/node_modules
+    networks:
+      - samapara_net
+
+  # ---------- services/decision_engine (Python/FastAPI + uv) ----------
+  decision_engine:
+    build:
+      context: ../services/decision_engine
+      dockerfile: Dockerfile.dev
+    container_name: samapara_decision_engine_dev
+    env_file:
+      - ../.env
+    environment:
+      PYTHONUNBUFFERED: "1"
+    ports:
+      - "${DECISION_ENGINE_PORT:-3300}:8000"
+    volumes:
+      - ../services/decision_engine:/app
+      - decision_venv:/app/.venv
+    networks:
+      - samapara_net
+
+  # ---------- services/telemetry_worker (Go/Gin) ----------
+  telemetry_worker:
+    build:
+      context: ../services/telemetry_worker
+      dockerfile: Dockerfile.dev
+    container_name: samapara_telemetry_worker_dev
+    env_file:
+      - ../.env
+    environment:
+      GIN_MODE: debug
+    ports:
+      - "${TELEMETRY_PORT:-3400}:8080"
+    volumes:
+      - ../services/telemetry_worker:/app
+      - go_mod_cache:/go/pkg/mod
+    networks:
+      - samapara_net
+
+volumes:
+  controll_node_modules:
+  api_platform_node_modules:
+  decision_venv:
+  go_mod_cache:

@@ -1,0 +1,11 @@
+# SAMPARA services/decision_engine — .dockerignore
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.env
+.env.*
+!.env.example
+*.log
+.git
+.DS_Store

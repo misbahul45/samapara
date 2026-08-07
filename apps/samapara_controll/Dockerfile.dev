@@ -1,0 +1,20 @@
+# ============================================================
+# SAMPARA apps/samapara_controll — development image (hot reload)
+#
+# - pnpm via corepack (packageManager pnpm@11.18.0 dari package.json)
+# - Source TIDAK di-copy: di-bind mount oleh docker-compose.dev.yml
+# - pnpm install di sini mengisi named volume controll_node_modules
+# ============================================================
+FROM node:22-slim
+
+RUN corepack enable
+
+WORKDIR /app
+
+# Copy-once manifest agar cache install optimal
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+
+EXPOSE 3000
+
+CMD ["pnpm", "dev", "--host", "0.0.0.0"]

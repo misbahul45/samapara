@@ -1,0 +1,20 @@
+# ============================================================
+# SAMPARA services/telemetry_worker — development image (hot reload)
+#
+# - Go 1.25 (sesuai go.mod) + Air (watcher, pola bemunair2026)
+# - Config watcher: .air.toml (build ./cmd/worker)
+# - Source TIDAK di-copy: di-bind mount oleh docker-compose.dev.yml
+# - Go module cache di named volume go_mod_cache
+# ============================================================
+FROM golang:1.25
+
+RUN go install github.com/air-verse/air@v1.66.1
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+EXPOSE 8080
+
+CMD ["air", "-c", ".air.toml"]

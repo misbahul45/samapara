@@ -1,0 +1,17 @@
+# ============================================================
+# SAMPARA services/telemetry_worker — Air hot reload config
+# Dipakai oleh Dockerfile.dev (dev container). Pola: bemunair2026
+# ============================================================
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -o ./tmp/worker ./cmd/worker"
+  bin = "./tmp/worker"
+  include_ext = ["go"]
+  exclude_dir = ["tmp", "vendor", "node_modules", ".git"]
+  exclude_regex = ["_test\\.go"]
+  delay = 1000
+
+[log]
+  time = true

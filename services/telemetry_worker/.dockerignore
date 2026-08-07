@@ -1,0 +1,9 @@
+# SAMPARA services/telemetry_worker — .dockerignore
+tmp
+vendor
+.env
+.env.*
+!.env.example
+*.log
+.git
+.DS_Store

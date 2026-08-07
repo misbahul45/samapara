@@ -1,0 +1,63 @@
+# ============================================
+# SAMPARA — root .gitignore
+# Meng-ignore semua yang TIDAK boleh masuk git.
+# LOCKFILES TETAP DI-TRACK: pnpm-lock.yaml, uv.lock, go.sum
+
+# --- Node dependencies ---
+node_modules/
+**/node_modules/
+
+# --- Python ---
+.venv/
+**/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# --- Nuxt / build outputs ---
+.nuxt/
+**/.nuxt/
+.nitro/
+**/.nitro/
+.output/
+**/.output/
+.data/
+**/.data/
+.cache/
+**/.cache/
+dist/
+**/dist/
+
+# --- Expo ---
+.expo/
+**/.expo/
+web-build/
+expo-env.d.ts
+
+# --- Go / Air ---
+tmp/
+**/tmp/
+bin/
+**/bin/
+*.test
+
+# --- Env files (rahasia! jangan pernah commit) ---
+.env
+.env.*
+!.env.example
+*.env.local
+
+# --- Logs ---
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# --- OS / editor ---
+.DS_Store
+.idea/
+.fleet/
+
+# --- TypeScript ---
+*.tsbuildinfo

@@ -1,0 +1,14 @@
+# SAMPARA apps/samapara_controll — .dockerignore
+node_modules
+.nuxt
+.nitro
+.output
+.data
+.cache
+dist
+.env
+.env.*
+!.env.example
+*.log
+.git
+.DS_Store
