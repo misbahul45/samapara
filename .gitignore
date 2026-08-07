@@ -61,3 +61,6 @@ yarn-debug.log*
 
 # --- TypeScript ---
 *.tsbuildinfo
+
+# brainstorm visual companion
+.superpowers/

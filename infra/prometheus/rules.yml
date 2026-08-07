@@ -1,0 +1,35 @@
+# ============================================================
+# SAMAPARA — Prometheus alert rules (dev dasar)
+# Tambahkan alert lanjutan setelah metrik real tersedia:
+# DB connections > 80%, long transactions, deadlocks,
+# Qdrant latency/memory/failed queries, Redis memory,
+# queue backlog, MQTT disconnected devices, worker lag,
+# disk > 80%.
+# ============================================================
+
+groups:
+  - name: samapara-infrastructure
+    rules:
+      - alert: PostgreSQLDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: PostgreSQL is down
+
+      - alert: QdrantDown
+        expr: up{job="qdrant"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Qdrant is down
+
+      - alert: ContainerMetricsDown
+        expr: up{job="cadvisor"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: cAdvisor metrics unavailable
