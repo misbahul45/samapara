@@ -4,15 +4,63 @@
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
 
-  --color-green-50: #EFFDF5;
-  --color-green-100: #D9FBE8;
-  --color-green-200: #B3F5D1;
-  --color-green-300: #75EDAE;
-  --color-green-400: #00DC82;
-  --color-green-500: #00C16A;
-  --color-green-600: #00A155;
-  --color-green-700: #007F45;
-  --color-green-800: #016538;
-  --color-green-900: #0A5331;
-  --color-green-950: #052E16;
+  --color-blue-50: #F0F3FF;
+  --color-blue-100: #E3EBFE;
+  --color-blue-200: #C7D9F2;
+  --color-blue-300: #9FBEE0;
+  --color-blue-400: #5F8FBE;
+  --color-blue-500: #0F4C81;
+  --color-blue-600: #004992;
+  --color-blue-700: #003F7E;
+  --color-blue-800: #00386D;
+  --color-blue-900: #00355F;
+  --color-blue-950: #00233F;
+
+  --color-green-50: #DBF2E6;
+  --color-green-100: #C7E9D6;
+  --color-green-200: #A3D8B9;
+  --color-green-300: #78C496;
+  --color-green-400: #4CA86C;
+  --color-green-500: #1F7A3E;
+  --color-green-600: #196A35;
+  --color-green-700: #14572C;
+  --color-green-800: #104623;
+  --color-green-900: #0C371B;
+  --color-green-950: #061F0F;
+
+  --color-yellow-50: #FFF8E6;
+  --color-yellow-100: #FFF0C2;
+  --color-yellow-200: #FFE391;
+  --color-yellow-300: #FFD15A;
+  --color-yellow-400: #FFC037;
+  --color-yellow-500: #FFB01F;
+  --color-yellow-600: #E99400;
+  --color-yellow-700: #C27500;
+  --color-yellow-800: #995B00;
+  --color-yellow-900: #7B4A00;
+  --color-yellow-950: #452800;
+
+  --color-red-50: #FFDAD6;
+  --color-red-100: #FFC8C3;
+  --color-red-200: #FFA8A1;
+  --color-red-300: #FF817A;
+  --color-red-400: #EB4E49;
+  --color-red-500: #BA1A1A;
+  --color-red-600: #A31515;
+  --color-red-700: #891111;
+  --color-red-800: #700F0F;
+  --color-red-900: #5D1111;
+  --color-red-950: #340707;
+
+  --color-slate-50: #F9F9FF;
+  --color-slate-100: #F0F3FF;
+  --color-slate-200: #E3EBFE;
+  --color-slate-300: #E0E3E8;
+  --color-slate-400: #A8ADB5;
+  --color-slate-500: #727780;
+  --color-slate-600: #596069;
+  --color-slate-700: #42474F;
+  --color-slate-800: #303740;
+  --color-slate-900: #202A38;
+  --color-slate-950: #101C2F;
 }
