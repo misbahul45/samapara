@@ -1,8 +1,5 @@
 # ============================================================
 # SAMAPARA — Prometheus dev config
-# CATATAN: nilai secret Qdrant dev ditulis via env substitution
-# ${QDRANT_READ_ONLY_API_KEY} (diset di compose service prometheus).
-# Production: gunakan secret file / templating — jangan hardcode.
 # ============================================================
 
 global:
@@ -32,7 +29,7 @@ scrape_configs:
       type: Bearer
       # Dev only: Prometheus tidak me-expand ${VAR} di field credentials.
       # Production: gunakan secret file / templating (jangan hardcode).
-      credentials: samapara_dev_qdrant_readonly
+      credentials: 58zoMFB69QZX2zFZGcTEhq35YOnf4Pxz5VTi805Tc4E=
     static_configs:
       - targets:
           - qdrant:6333
