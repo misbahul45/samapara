@@ -12,7 +12,7 @@ export function buildApp() {
   const app = new Hono()
   app.use('*', logger())
   app.use('*', secureHeaders())
-  app.use('/api/*', cors({ origin: env.publicOrigin }))
+  app.use('/api/*', cors({ origin: env.publicOrigins }))
   app.use('/internal/*', bearerAuth({ token: env.internalServiceToken }))
   app.get('/healthz', (c) => c.json({ status: 'ok' }))
   app.route('/api', createApiRouter())

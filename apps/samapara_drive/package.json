@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~57.0.9",
+    "@tanstack/react-query": "^5.101.4",
     "expo": "~57.0.11",
     "expo-constants": "~57.0.9",
     "expo-device": "~57.0.1",
@@ -29,6 +30,8 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "eslint": "^9.39.5",
+    "eslint-config-expo": "~57.0.1",
     "typescript": "~6.0.3"
   },
   "scripts": {

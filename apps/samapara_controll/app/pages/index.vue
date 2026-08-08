@@ -40,7 +40,7 @@ const rows = computed<DeviceRow[]>(() =>
       title="Devices"
       description="Daftar container pintar dari telemetry SAMAPARA"
     >
-      <template #right>
+      <template #links>
         <UButton
           icon="i-lucide-refresh-cw"
           label="Muat ulang"

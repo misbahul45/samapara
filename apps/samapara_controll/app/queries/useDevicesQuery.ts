@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/vue-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { deviceKeys } from './deviceKeys'
 
 export interface Device {
@@ -9,6 +9,16 @@ export interface Device {
   active: boolean
   created_at: string
   updated_at: string
+}
+
+export interface ForecastResult {
+  status: string
+  data: {
+    device_id: string
+    p50: number
+    p80: number
+    p90: number
+  }
 }
 
 export interface DeviceListResponse {
@@ -30,5 +40,16 @@ export function useDeviceDetailQuery(deviceId: string) {
     queryKey: deviceKeys.detail(deviceId),
     queryFn: () => api.get<{ device: Device, latest_forecast: unknown | null }>(`/devices/${deviceId}`),
     enabled: () => deviceId.length > 0
+  })
+}
+
+export function useRunForecastMutation() {
+  const api = useApi()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (deviceId: string) => api.post<{ forecast: ForecastResult }>(`/devices/${deviceId}/forecast/run`),
+    onSuccess: (_data, deviceId) => {
+      queryClient.invalidateQueries({ queryKey: deviceKeys.detail(deviceId) })
+    }
   })
 }

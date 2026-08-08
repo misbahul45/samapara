@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { UpstreamError } from '../clients/internalHttp.js'
 import { runForecast } from '../clients/decisionEngine.js'
 import { HttpError } from '../lib/httpError.js'
+import { jsonSafe } from '../lib/serialize.js'
 import * as deviceService from '../services/deviceService.js'
 import * as forecastService from '../services/forecastService.js'
 import * as aiAuditService from '../services/aiAuditService.js'
@@ -58,7 +59,7 @@ export function deviceRoutes() {
       throw new HttpError(404, 'device not found')
     }
     const latest = await forecastService.getLatest(device.id)
-    return c.json({ device, latest_forecast: latest })
+    return c.json({ device, latest_forecast: jsonSafe(latest) })
   })
 
   router.get('/:id/forecasts', async (c) => {
@@ -68,7 +69,7 @@ export function deviceRoutes() {
     }
     const limit = Math.min(Math.max(Number(c.req.query('limit') ?? 48), 1), 500)
     const series = await forecastService.getSeries(device.id, limit)
-    return c.json({ device_id: device.id, series })
+    return c.json({ device_id: device.id, series: jsonSafe(series) })
   })
 
   router.post('/:id/forecasts', zValidator('json', createForecastSchema), async (c) => {
@@ -92,9 +93,9 @@ export function deviceRoutes() {
       actor_type: 'api',
       action: 'forecast.create',
       input: { device_id: device.id, forecast_for: body.forecast_for },
-      output: { forecast_id: forecast.id }
+      output: { forecast_id: String(forecast.id) }
     })
-    return c.json({ forecast }, 201)
+    return c.json({ forecast: jsonSafe(forecast) }, 201)
   })
 
   router.post('/:id/forecast/run', async (c) => {

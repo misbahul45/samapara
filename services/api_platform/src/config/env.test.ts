@@ -8,12 +8,12 @@ const fullEnv = {
   DECISION_ENGINE_URL: 'http://decision_engine:8000',
   TELEMETRY_WORKER_URL: 'http://telemetry_worker:8080',
   INTERNAL_SERVICE_TOKEN: 'token-abc',
-  PUBLIC_ORIGIN: 'http://localhost:8090',
+  PUBLIC_ORIGINS: 'http://localhost:8090,http://localhost:8081',
 }
 
 describe('loadEnv', () => {
   it('throws when a required variable is missing', () => {
-    expect(() => loadEnv({})).toThrow(/DATABASE_URL|INTERNAL_SERVICE_TOKEN|PUBLIC_ORIGIN/)
+    expect(() => loadEnv({})).toThrow(/DATABASE_URL|INTERNAL_SERVICE_TOKEN|PUBLIC_ORIGINS/)
   })
 
   it('throws when an url variable is not a valid url', () => {
@@ -29,6 +29,10 @@ describe('loadEnv', () => {
     expect(env.decisionEngineUrl).toBe('http://decision_engine:8000')
     expect(env.telemetryWorkerUrl).toBe('http://telemetry_worker:8080')
     expect(env.internalServiceToken).toBe('token-abc')
-    expect(env.publicOrigin).toBe('http://localhost:8090')
+    expect(env.publicOrigins).toEqual(['http://localhost:8090', 'http://localhost:8081'])
+  })
+
+  it('throws when the origin list is empty', () => {
+    expect(() => loadEnv({ ...fullEnv, PUBLIC_ORIGINS: '  ,  ' })).toThrow(/PUBLIC_ORIGINS/)
   })
 })
