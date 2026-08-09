@@ -17,7 +17,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="overflow-x-clip bg-white">
+  <div class="overflow-x-clip">
     <HeroSection />
     <OperationSection />
     <WorkflowSection />
