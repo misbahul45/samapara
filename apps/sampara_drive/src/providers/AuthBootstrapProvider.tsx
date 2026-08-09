@@ -1,4 +1,5 @@
 import { readAuthSession, useAuthStore } from '@/features/auth';
+import { BootstrapScreen } from '@/shared/components/BootstrapScreen';
 import { useEffect, type PropsWithChildren } from 'react';
 
 export function AuthBootstrapProvider({ children }: PropsWithChildren) {
@@ -34,7 +35,7 @@ export function AuthBootstrapProvider({ children }: PropsWithChildren) {
   }, [setInitialized, setUser]);
 
   if (!initialized) {
-    return null;
+    return <BootstrapScreen />;
   }
 
   return children;

@@ -8,21 +8,71 @@ import {
   WorkflowSection
 } from '~/features/landing'
 
+const title =
+  'SAMPARA | Pengangkutan Sampah Adaptif Berbasis Kebutuhan'
+
+const description =
+  'Pantau kondisi bin, prediksi kebutuhan pengangkutan, tentukan prioritas, dan rencanakan rute armada adaptif dalam satu platform operasional kawasan.'
+
+const requestUrl = useRequestURL()
+
+const canonicalUrl = new URL(
+  '/',
+  requestUrl.origin
+).toString()
+
+const ogImageUrl = new URL(
+  '/home/hero-environment.png',
+  requestUrl.origin
+).toString()
+
 useSeoMeta({
-  title: 'SAMPARA | Operasi Pengangkutan Berbasis Kebutuhan',
-  description: 'Pantau kondisi bin, pahami prioritas, dan rencanakan rute armada dalam satu platform operasional kawasan.',
-  ogTitle: 'SAMPARA | Operasi Pengangkutan Berbasis Kebutuhan',
-  ogDescription: 'Pantau kondisi bin, pahami prioritas, dan rencanakan rute armada dalam satu platform operasional kawasan.'
+  title,
+  description,
+  robots: 'index, follow, max-image-preview:large',
+  ogTitle: title,
+  ogDescription: description,
+  ogType: 'website',
+  ogLocale: 'id_ID',
+  ogUrl: canonicalUrl,
+  ogImage: ogImageUrl,
+  ogImageAlt:
+    'Kawasan operasional SAMPARA untuk pengangkutan sampah berbasis kebutuhan',
+  twitterCard: 'summary_large_image',
+  twitterTitle: title,
+  twitterDescription: description,
+  twitterImage: ogImageUrl
+})
+
+useHead({
+  htmlAttrs: {
+    lang: 'id'
+  },
+  link: [
+    {
+      rel: 'canonical',
+      href: canonicalUrl
+    }
+  ],
+  meta: [
+    {
+      name: 'theme-color',
+      content: '#ffffff'
+    }
+  ]
 })
 </script>
 
 <template>
-  <div class="overflow-x-clip">
+  <main
+    id="main-content"
+    class="overflow-x-clip "
+  >
     <HeroSection />
     <OperationSection />
     <WorkflowSection />
     <PlatformSection />
     <RegisterAreaSection />
     <FinalCTASection />
-  </div>
+  </main>
 </template>

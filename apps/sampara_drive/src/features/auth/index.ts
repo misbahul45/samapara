@@ -1,4 +1,4 @@
-export { login } from './api';
+export { authenticateLocally } from './services/demo-auth';
 export { useLoginMutation, useLogout } from './hooks';
 export { authSessionSchema, authUserSchema, loginSchema } from './schema';
 export { default as LoginScreen } from './screens/LoginScreen';

@@ -1,0 +1,17 @@
+export const SAMPARA_COLORS = {
+  background: '#F9F9FF',
+  surface: '#FFFFFF',
+  surfaceInfo: '#F0F3FF',
+  border: '#E3EBFE',
+  disabled: '#E0E3E8',
+  navy: '#00233F',
+  primary: '#0F4C81',
+  primaryActive: '#004992',
+  text: '#101C2F',
+  textSecondary: '#42474F',
+  muted: '#727780',
+  success: '#1F7A3E',
+  error: '#BA1A1A',
+  warning: '#FFB01F',
+  data: '#90DAEE',
+} as const;

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { login } from './api';
+import { authenticateLocally } from './services/demo-auth';
 import { clearAuthSession, persistAuthSession } from './session/session-storage';
 import { useAuthStore } from './store';
 
@@ -7,7 +7,7 @@ export function useLoginMutation() {
   const setUser = useAuthStore((state) => state.setUser);
 
   return useMutation({
-    mutationFn: login,
+    mutationFn: authenticateLocally,
     onSuccess: async (session) => {
       await persistAuthSession(session);
       setUser(session.user);

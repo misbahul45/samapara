@@ -1,4 +1,5 @@
 import { DarkTheme, DefaultTheme, type Theme } from 'expo-router/react-navigation';
+import { SAMPARA_COLORS } from './colors';
 
 export const THEME_CSS_VARIABLES = {
   background: 'hsl(var(--background))',
@@ -21,24 +22,24 @@ export const NAV_THEME: Record<'light' | 'dark', Theme> = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: '#F9F9FF',
-      card: '#FFFFFF',
-      text: '#101C2F',
-      border: '#E3EBFE',
-      primary: '#0F4C81',
-      notification: '#BA1A1A',
+      background: SAMPARA_COLORS.background,
+      card: SAMPARA_COLORS.surface,
+      text: SAMPARA_COLORS.text,
+      border: SAMPARA_COLORS.border,
+      primary: SAMPARA_COLORS.primary,
+      notification: SAMPARA_COLORS.error,
     },
   },
   dark: {
     ...DarkTheme,
     colors: {
       ...DarkTheme.colors,
-      background: '#F9F9FF',
-      card: '#FFFFFF',
-      text: '#101C2F',
-      border: '#E3EBFE',
-      primary: '#0F4C81',
-      notification: '#BA1A1A',
+      background: SAMPARA_COLORS.background,
+      card: SAMPARA_COLORS.surface,
+      text: SAMPARA_COLORS.text,
+      border: SAMPARA_COLORS.border,
+      primary: SAMPARA_COLORS.primary,
+      notification: SAMPARA_COLORS.error,
     },
   },
 };
