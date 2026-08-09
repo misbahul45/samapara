@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     api_platform_url: str
     internal_service_token: str
 
-    qdrant_collection: str = "samapara_knowledge"
+    qdrant_collection: str = "sampara_knowledge"
 
     db_pool_min: int = 1
     db_pool_max: int = 5

@@ -10,9 +10,12 @@ FROM node:22-slim
 RUN corepack enable
 
 WORKDIR /app
+RUN chown node:node /app
+
+USER node
 
 # Copy-once manifest agar cache install optimal
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY --chown=node:node package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 EXPOSE 3000

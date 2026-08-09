@@ -1,7 +1,7 @@
-# Design: Mobile Design System (RNR + NativeWind) + Login — samapara_drive
+# Design: Mobile Design System (RNR + NativeWind) + Login — sampara_drive
 
 Date: 2026-08-08
-Scope: `apps/samapara_drive` (Expo SDK 57, RN 0.86, React 19.2, New Architecture)
+Scope: `apps/sampara_drive` (Expo SDK 57, RN 0.86, React 19.2, New Architecture)
 Status: approved by user
 
 ## Goal

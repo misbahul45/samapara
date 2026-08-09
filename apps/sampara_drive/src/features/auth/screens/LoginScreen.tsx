@@ -17,7 +17,7 @@ export default function LoginScreen() {
 
   const { control, handleSubmit, formState } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: 'driver@samapara.local', password: 'samapara-demo' },
+    defaultValues: { email: 'driver@sampara.local', password: 'sampara-demo' },
   });
 
   async function onSubmit(input: LoginInput) {
@@ -29,7 +29,7 @@ export default function LoginScreen() {
     <Screen className="justify-center">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Masuk ke Samapara</CardTitle>
+          <CardTitle>Masuk ke Sampara</CardTitle>
           <CardDescription>Masukkan email dan kata sandi untuk melanjutkan.</CardDescription>
         </CardHeader>
         <CardContent className="gap-5">

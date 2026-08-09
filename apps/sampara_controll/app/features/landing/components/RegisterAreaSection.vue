@@ -1,46 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { revealOnScroll, useLandingMotion } from '../composables/useLandingMotion'
+import { areaOnboardingSteps, areaTypes } from '../constants/landingContent'
 
 const section = ref<HTMLElement | null>(null)
-
-const onboardingSteps = [
-  {
-    number: '01',
-    title: 'Identitas Area',
-    description: 'Tetapkan nama kawasan dan konteks operasionalnya.'
-  },
-  {
-    number: '02',
-    title: 'Tentukan Wilayah',
-    description: 'Gambarkan batas layanan sebagai ruang kerja utama.'
-  },
-  {
-    number: '03',
-    title: 'Tambahkan Titik Bin',
-    description: 'Petakan titik pengumpulan dan karakteristiknya.'
-  },
-  {
-    number: '04',
-    title: 'Siapkan Operasional',
-    description: 'Hubungkan kebutuhan area dengan tim dan armada.'
-  }
-]
-
-const areaTypes = [
-  {
-    title: 'Kampus',
-    description: 'Kelola gedung, fasilitas, dan titik pengumpulan kampus.'
-  },
-  {
-    title: 'Rumah Sakit',
-    description: 'Atur titik dengan kebutuhan pelayanan yang berbeda.'
-  },
-  {
-    title: 'Kawasan Industri',
-    description: 'Koordinasikan banyak titik dan armada dalam satu wilayah.'
-  }
-]
 
 useLandingMotion(section, ({ gsap, reduceMotion }) => {
   if (!section.value) {
@@ -122,14 +85,18 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
       >
         <div
           data-area-map
-          class="register-map relative min-h-[430px] overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/72 shadow-[0_28px_65px_rgba(0,53,95,0.12)] sm:min-h-[520px]"
+          class="register-map relative min-h-[430px] overflow-hidden rounded-[1.5rem] border border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(0,53,95,0.08)] sm:min-h-[520px]"
           role="img"
           aria-label="Peta pendaftaran kawasan dengan batas area, empat titik bin, dan titik operasional"
         >
           <div class="absolute inset-x-5 top-5 z-20 flex items-center justify-between border-b border-slate-200/80 pb-4 sm:inset-x-7 sm:top-7">
             <div>
-              <p class="text-sm font-semibold text-blue-950">Tentukan wilayah layanan</p>
-              <p class="mt-1 text-[10px] text-slate-500 sm:text-xs">Tarik titik untuk menyesuaikan batas area</p>
+              <p class="text-sm font-semibold text-blue-950">
+                Tentukan wilayah layanan
+              </p>
+              <p class="mt-1 text-[10px] text-slate-500 sm:text-xs">
+                Tarik titik untuk menyesuaikan batas area
+              </p>
             </div>
             <span class="text-[10px] font-medium text-blue-700 sm:text-xs">4 titik bin</span>
           </div>
@@ -140,20 +107,83 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             fill="none"
             aria-hidden="true"
           >
-            <path d="M-35 139C105 121 158 182 271 111C371 48 481 122 702 55" stroke="#E3EBFE" stroke-width="20" />
-            <path d="M-22 433C113 397 188 327 294 369C431 423 492 487 701 410" stroke="#E3EBFE" stroke-width="24" />
-            <path d="M132 -29C177 95 149 176 213 239C279 304 345 296 363 579" stroke="#F0F3FF" stroke-width="14" />
-            <path d="M559 -25C516 112 505 178 552 258C596 333 581 440 548 574" stroke="#F0F3FF" stroke-width="14" />
-            <path d="M167 183L431 133L516 343L328 442L137 352Z" fill="rgba(144,218,238,0.20)" stroke="#004992" stroke-width="3" stroke-dasharray="9 7" />
-            <path d="M167 183L431 133L516 343L328 442L137 352Z" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="9" opacity="0.5" />
-            <path d="M167 183L431 133L516 343L328 442L137 352Z" fill="rgba(144,218,238,0.18)" stroke="#004992" stroke-width="3" stroke-dasharray="9 7" />
-            <path d="M214 326C280 302 315 214 382 222C432 228 444 298 482 318" stroke="#1F7A3E" stroke-width="4" stroke-linecap="round" />
-            <g fill="#FFFFFF" stroke="#004992" stroke-width="3">
-              <circle cx="167" cy="183" r="7" />
-              <circle cx="431" cy="133" r="7" />
-              <circle cx="516" cy="343" r="7" />
-              <circle cx="328" cy="442" r="7" />
-              <circle cx="137" cy="352" r="7" />
+            <path
+              d="M-35 139C105 121 158 182 271 111C371 48 481 122 702 55"
+              stroke="#E3EBFE"
+              stroke-width="20"
+            />
+            <path
+              d="M-22 433C113 397 188 327 294 369C431 423 492 487 701 410"
+              stroke="#E3EBFE"
+              stroke-width="24"
+            />
+            <path
+              d="M132 -29C177 95 149 176 213 239C279 304 345 296 363 579"
+              stroke="#F0F3FF"
+              stroke-width="14"
+            />
+            <path
+              d="M559 -25C516 112 505 178 552 258C596 333 581 440 548 574"
+              stroke="#F0F3FF"
+              stroke-width="14"
+            />
+            <path
+              d="M167 183L431 133L516 343L328 442L137 352Z"
+              fill="rgba(144,218,238,0.20)"
+              stroke="#004992"
+              stroke-width="3"
+              stroke-dasharray="9 7"
+            />
+            <path
+              d="M167 183L431 133L516 343L328 442L137 352Z"
+              fill="none"
+              stroke="rgba(255,255,255,0.9)"
+              stroke-width="9"
+              opacity="0.5"
+            />
+            <path
+              d="M167 183L431 133L516 343L328 442L137 352Z"
+              fill="rgba(144,218,238,0.18)"
+              stroke="#004992"
+              stroke-width="3"
+              stroke-dasharray="9 7"
+            />
+            <path
+              d="M214 326C280 302 315 214 382 222C432 228 444 298 482 318"
+              stroke="#1F7A3E"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+            <g
+              fill="#FFFFFF"
+              stroke="#004992"
+              stroke-width="3"
+            >
+              <circle
+                cx="167"
+                cy="183"
+                r="7"
+              />
+              <circle
+                cx="431"
+                cy="133"
+                r="7"
+              />
+              <circle
+                cx="516"
+                cy="343"
+                r="7"
+              />
+              <circle
+                cx="328"
+                cy="442"
+                r="7"
+              />
+              <circle
+                cx="137"
+                cy="352"
+                r="7"
+              />
             </g>
           </svg>
 
@@ -193,7 +223,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             </p>
             <div class="mt-5 border-t border-slate-200">
               <div
-                v-for="step in onboardingSteps"
+                v-for="step in areaOnboardingSteps"
                 :key="step.number"
                 data-area-step
                 class="grid grid-cols-[56px_1fr] gap-4 border-b border-slate-200 py-5 sm:grid-cols-[72px_1fr] sm:py-6"
@@ -213,9 +243,9 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             </div>
           </div>
 
-          <NuxtLink
-            to="/register-area"
-            class="group mt-8 inline-flex min-h-13 w-full items-center justify-between rounded-lg bg-blue-500 px-6 text-base font-semibold text-white shadow-[0_12px_30px_rgba(15,76,129,0.18)] transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto sm:min-w-56"
+          <a
+            href="/register-area"
+            class="group mt-8 inline-flex min-h-13 w-full items-center justify-between rounded-lg bg-blue-500 px-6 text-base font-semibold text-white shadow-[0_6px_16px_rgba(15,76,129,0.14)] transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto sm:min-w-56"
           >
             Daftarkan Area
             <UIcon
@@ -223,7 +253,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
               class="size-4 transition-transform group-hover:translate-x-1"
               aria-hidden="true"
             />
-          </NuxtLink>
+          </a>
         </div>
       </div>
 
@@ -248,17 +278,10 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
 <style scoped>
 .area-surface {
-  background:
-    radial-gradient(circle at 85% 20%, rgba(76, 168, 108, 0.18), transparent 40%),
-    radial-gradient(circle at 15% 70%, rgba(95, 143, 190, 0.2), transparent 40%),
-    linear-gradient(135deg, var(--color-green-50), var(--color-blue-50));
+  background-color: var(--color-green-50);
 }
 
 .register-map {
-  background-color: rgba(255, 255, 255, 0.72);
-  background-image:
-    linear-gradient(rgba(15, 76, 129, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 76, 129, 0.04) 1px, transparent 1px);
-  background-size: 34px 34px;
+  background-color: white;
 }
 </style>

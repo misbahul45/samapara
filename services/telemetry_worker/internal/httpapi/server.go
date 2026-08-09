@@ -57,8 +57,8 @@ func (s *Server) Router() *gin.Engine {
 	return router
 }
 
-// command mengirim command MQTT ke topic samapara/{device}/command (QoS 1).
-// Response 202 Accepted — ack ESP32 via samapara/{device}/command/ack.
+// command mengirim command MQTT ke topic sampara/{device}/command (QoS 1).
+// Response 202 Accepted — ack ESP32 via sampara/{device}/command/ack.
 func (s *Server) command(c *gin.Context) {
 	var body struct {
 		Command string         `json:"command"`
@@ -76,7 +76,7 @@ func (s *Server) command(c *gin.Context) {
 	}
 	data, _ := json.Marshal(message)
 
-	topic := "samapara/" + c.Param("id") + "/command"
+	topic := "sampara/" + c.Param("id") + "/command"
 	token := s.mqtt.Publish(topic, 1, false, data)
 
 	if !token.WaitTimeout(5 * time.Second) {

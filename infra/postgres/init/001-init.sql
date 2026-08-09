@@ -1,5 +1,5 @@
 -- ============================================================
--- SAMAPARA — init PostgreSQL + TimescaleDB
+-- SAMPARA — init PostgreSQL + TimescaleDB
 -- Dijalankan sekali saat volume postgres pertama kali dibuat
 -- (docker-entrypoint-initdb.d). Idempotent: IF NOT EXISTS.
 --
@@ -9,11 +9,11 @@
 --   gold   -> forecasts, shipments, route_results (siap konsumsi)
 --
 -- Catatan ownership:
---   - public + gold      : Prisma (CLI pakai role samapara_owner;
---                          runtime pakai samapara_app)
---   - bronze + silver    : SQL init + worker Python (samapara_ai)
---   - devices            : ditulis Hono (samapara_app), dibaca Go
---                          (samapara_ingestor_ro) & Python (samapara_ai)
+--   - public + gold      : Prisma (CLI pakai role sampara_owner;
+--                          runtime pakai sampara_app)
+--   - bronze + silver    : SQL init + worker Python (sampara_ai)
+--   - devices            : ditulis Hono (sampara_app), dibaca Go
+--                          (sampara_ingestor_ro) & Python (sampara_ai)
 -- ============================================================
 
 CREATE EXTENSION IF NOT EXISTS timescaledb;

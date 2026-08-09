@@ -1,10 +1,10 @@
-# SAMAPARA — Architecture
+# SAMPARA — Architecture
 
 Smart waste management: IoT telemetry (ESP32 + load cell/ultrasonic) → MQTT → Go
 ingestion → Redis Streams → Python AI (forecasting N-BEATSx, RAG) → routing
 (OR-Tools + Google Routes) → web/mobile apps, dengan human-in-the-loop approval.
 
-> Referensi blueprint lengkap: `docs/superpowers/plans/2026-08-08-samapara-infra-stack.md`
+> Referensi blueprint lengkap: `docs/superpowers/plans/2026-08-08-sampara-infra-stack.md`
 
 ## Stack
 
@@ -21,8 +21,8 @@ ingestion → Redis Streams → Python AI (forecasting N-BEATSx, RAG) → routin
 | AI | Python + FastAPI + uv (`services/decision_engine`) + consumer worker Redis Streams; forecasting saat ini baseline P50/P80/P90 (N-BEATsx di roadmap) |
 | Agent/RAG | LangGraph (orchestrasi), Haystack (pipeline RAG), CrewAI (opsional) |
 | Routing | OR-Tools (lokal) + Google Routes/Optimization API |
-| Web | **Nuxt 4** + TanStack Vue Query (`apps/samapara_controll`) — BUKAN SvelteKit |
-| Mobile | React Native + Expo + TanStack React Query (`apps/samapara_drive`, jalan di host) |
+| Web | **Nuxt 4** + TanStack Vue Query (`apps/sampara_controll`) — BUKAN SvelteKit |
+| Mobile | React Native + Expo + TanStack React Query (`apps/sampara_drive`, jalan di host) |
 | Monitoring | Prometheus + postgres-exporter + cAdvisor + Grafana |
 | Logs | Loki + **Grafana Alloy** (Promtail sudah EOL 2026-03) |
 | Error tracking | Sentry (SaaS, fase lanjutan) |
@@ -39,7 +39,7 @@ infra/dev.sh logs        # follow logs
 
 ## Gateway (nginx) — gateway-only
 
-Semua service app hanya di internal network `samapara_net`; hanya nginx yang
+Semua service app hanya di internal network `sampara_net`; hanya nginx yang
 di-publish ke host. Infra service (DB, Redis, Qdrant, dst) juga hanya bind
 `127.0.0.1` di host.
 
@@ -50,7 +50,7 @@ di-publish ke host. Infra service (DB, Redis, Qdrant, dst) juga hanya bind
 | `/` | `controll` (Nuxt + WebSocket HMR) |
 
 `/decision/` dan `/telemetry/` sengaja TIDAK di-expose publik (fase B); kedua
-service hanya bisa diakses di internal network `samapara_net`.
+service hanya bisa diakses di internal network `sampara_net`.
 
 Catatan nginx: upstream disimpan dalam **variable `host:port` tanpa scheme**
 (pola ISAC). `proxy_pass` dengan variable tidak mengganti path otomatis,
@@ -61,7 +61,7 @@ karena itu route `/api/` diteruskan utuh (tanpa strip).
 Schema (bukan 3 database):
 
 ```text
-postgres (samapara)
+postgres (sampara)
 ├── public   : devices, ai_audit_logs
 ├── bronze   : telemetry_raw          (hypertable, mentah dari MQTT)
 ├── silver   : telemetry_clean        (hypertable, normalisasi + anomaly_score)
@@ -84,7 +84,7 @@ Consumer groups: `telemetry-normalizer`, `forecast-workers`, dst.
 
 ## Qdrant (vector + RAG)
 
-Collection `samapara_knowledge` — dibuat dengan config:
+Collection `sampara_knowledge` — dibuat dengan config:
 
 ```json
 {
@@ -120,8 +120,8 @@ Model LLM besar tidak di-self-host di mesin yang sama.
 ## Fase B — status implementasi (per 2026-08-08)
 
 Boundary final: nginx :8090 satu-satunya entry publik; internal service hanya
-di network `samapara_net`; DB role least-privilege
-(`samapara_owner`/`samapara_app`/`samapara_ingestor_ro`/`samapara_ai`).
+di network `sampara_net`; DB role least-privilege
+(`sampara_owner`/`sampara_app`/`sampara_ingestor_ro`/`sampara_ai`).
 
 | Service | Stack | Endpoint | Status |
 |---|---|---|---|
@@ -131,7 +131,7 @@ di network `samapara_net`; DB role least-privilege
 | decision_engine | Python FastAPI + uv | `:8000/health`, `/forecast/run` (internal) | running |
 | decision_worker | Python consumer (service terpisah) | XREADGROUP `stream:telemetry` → bronze/silver → `stream:forecast` | running |
 | controll | Nuxt 4 + @nuxt/ui 4 + TanStack Vue Query | `:8090/` (via nginx): list device, detail, Jalankan Forecast | running |
-| samapara_drive | Expo 57 + expo-router + TanStack React Query | host-only (Expo web dev :8081): list device → detail → forecast run | running |
+| sampara_drive | Expo 57 + expo-router + TanStack React Query | host-only (Expo web dev :8081): list device → detail → forecast run | running |
 
 Alur terverifikasi E2E (via nginx :8090):
 

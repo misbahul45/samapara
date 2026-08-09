@@ -1,15 +1,7 @@
 <script setup lang="ts">
+import { footerPlatformLinks, footerProductLinks } from '../constants/landingContent'
+
 const year = new Date().getFullYear()
-
-const productLinks = [
-  { label: 'Control', to: '/#platform' },
-  { label: 'Drive', to: '/#platform' }
-]
-
-const platformLinks = [
-  { label: 'Cara Kerja', to: '/#cara-kerja' },
-  { label: 'Daftarkan Area', to: '/register-area' }
-]
 </script>
 
 <template>
@@ -35,7 +27,7 @@ const platformLinks = [
           </p>
           <ul class="mt-4 space-y-3">
             <li
-              v-for="link in productLinks"
+              v-for="link in footerProductLinks"
               :key="link.label"
             >
               <NuxtLink
@@ -54,15 +46,15 @@ const platformLinks = [
           </p>
           <ul class="mt-4 space-y-3">
             <li
-              v-for="link in platformLinks"
+              v-for="link in footerPlatformLinks"
               :key="link.label"
             >
-              <NuxtLink
-                :to="link.to"
+              <a
+                :href="link.to"
                 class="text-sm text-blue-100/70 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-data"
               >
                 {{ link.label }}
-              </NuxtLink>
+              </a>
             </li>
           </ul>
         </div>

@@ -1,6 +1,6 @@
-# AGENTS.md — SAMAPARA
+# AGENTS.md — SAMPARA
 
-Samapara adalah platform smart waste management dengan alur utama:
+Sampara adalah platform smart waste management dengan alur utama:
 
 ```text
 ESP32 → MQTT → telemetry_worker → Redis Streams → decision_worker
@@ -45,19 +45,19 @@ Project memakai `codebase-memory-mcp`. Untuk code discovery, gunakan urutan:
 Gunakan `search_code` untuk pencarian teks yang perlu konteks graph. Gunakan
 `rg` hanya untuk literal, error message, config, shell, Dockerfile, dokumentasi,
 atau ketika graph tidak cukup. Project graph saat ini bernama
-`home-misbahul45-code-samapara`; index repository bila graph belum tersedia.
+`home-misbahul45-code-sampara`; index repository bila graph belum tersedia.
 
 Jika Xninetzy MCP terhubung, baca
 `/home/misbahul45/.xninetzy/CLI_SHARED_INSTRUCTIONS.md`. Ambil memory hanya dengan
-query sempit yang menyebut Samapara dan task aktif. Repository tetap menjadi
+query sempit yang menyebut Sampara dan task aktif. Repository tetap menjadi
 sumber kebenaran; memory adalah konteks, bukan pengganti validasi file aktual.
 
 ## Struktur repository
 
 ```text
 apps/
-├── samapara_controll    Nuxt 4 web admin/ops
-└── samapara_drive       Expo/React Native, berjalan di host
+├── sampara_controll    Nuxt 4 web admin/ops
+└── sampara_drive       Expo/React Native, berjalan di host
 services/
 ├── api_platform         Hono/TypeScript REST API + Prisma
 ├── decision_engine      FastAPI/Python 3.14 + uv
@@ -84,10 +84,10 @@ dimigrasikan.
 
 ## Invariant sistem
 
-1. Web tetap Nuxt di `apps/samapara_controll`; jangan pindah ke SvelteKit.
-2. Penamaan wajib `samapara`, bukan `sampara`: database/user `samapara`, Qdrant
-   collection `samapara_knowledge`, container `samapara_*_dev`, network
-   `samapara_net`.
+1. Web tetap Nuxt di `apps/sampara_controll`; jangan pindah ke SvelteKit.
+2. Penamaan wajib `sampara`, bukan `samapara`: database/user `sampara`, Qdrant
+   collection `sampara_knowledge`, container `sampara_*_dev`, network
+   `sampara_net`.
 3. TimescaleDB adalah extension di satu PostgreSQL, bukan service database lain.
 4. Data PostgreSQL berlapis melalui schema `bronze`, `silver`, dan `gold`.
 5. Queue/event backbone adalah satu Redis Streams; jangan menambah BullMQ,
@@ -175,7 +175,7 @@ Sediakan dua tingkat workflow:
 
 | Scope | Folder dibuka | Service |
 | --- | --- | --- |
-| UI | `apps/samapara_controll` | Nuxt |
+| UI | `apps/sampara_controll` | Nuxt |
 | API | `services/api_platform` | API + PostgreSQL + Redis |
 | AI | `services/decision_engine` | Decision + PostgreSQL + Redis + Qdrant |
 | IoT | `services/telemetry_worker` | Go + PostgreSQL + Redis + Mosquitto |
@@ -187,7 +187,7 @@ Setiap Dev Container menggunakan `.env` root melalui symlink yang dibuat
 Command pembuka:
 
 ```bash
-code apps/samapara_controll
+code apps/sampara_controll
 code services/api_platform
 code services/decision_engine
 code services/telemetry_worker
@@ -284,7 +284,7 @@ Jalankan pemeriksaan yang relevan dengan file yang berubah.
 Nuxt:
 
 ```bash
-cd apps/samapara_controll
+cd apps/sampara_controll
 pnpm lint
 pnpm typecheck
 ```
@@ -316,7 +316,7 @@ Compose dan Dev Container:
 
 ```bash
 make config
-docker compose --env-file apps/samapara_controll/.devcontainer/.env -f apps/samapara_controll/.devcontainer/docker-compose.yml config --quiet
+docker compose --env-file apps/sampara_controll/.devcontainer/.env -f apps/sampara_controll/.devcontainer/docker-compose.yml config --quiet
 docker compose --env-file services/api_platform/.devcontainer/.env -f services/api_platform/.devcontainer/docker-compose.yml config --quiet
 docker compose --env-file services/decision_engine/.devcontainer/.env -f services/decision_engine/.devcontainer/docker-compose.yml config --quiet
 docker compose --env-file services/telemetry_worker/.devcontainer/.env -f services/telemetry_worker/.devcontainer/docker-compose.yml config --quiet

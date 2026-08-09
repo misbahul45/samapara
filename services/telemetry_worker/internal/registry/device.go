@@ -1,5 +1,5 @@
 // Package registry menyediakan device registry: Redis cache (ditulis Hono)
-// dengan fallback PostgreSQL READ ONLY (role samapara_ingestor_ro).
+// dengan fallback PostgreSQL READ ONLY (role sampara_ingestor_ro).
 package registry
 
 import (

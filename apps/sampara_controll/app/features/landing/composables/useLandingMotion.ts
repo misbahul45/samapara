@@ -11,10 +11,10 @@ interface LandingMotionContext {
   reduceMotion: boolean
 }
 
-type MotionSetup = (context: LandingMotionContext) => void | (() => void)
+type MotionSetup = (context: LandingMotionContext) => unknown
 
 export function useLandingMotion(root: Ref<HTMLElement | null>, setup: MotionSetup) {
-  let cleanup: void | (() => void)
+  let cleanup: (() => void) | undefined
   let context: { revert: () => void } | undefined
   let disposed = false
 
@@ -32,7 +32,11 @@ export function useLandingMotion(root: Ref<HTMLElement | null>, setup: MotionSet
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     context = gsap.context(() => {
-      cleanup = setup({ gsap, ScrollTrigger, reduceMotion })
+      const setupResult = setup({ gsap, ScrollTrigger, reduceMotion })
+
+      if (typeof setupResult === 'function') {
+        cleanup = setupResult as () => void
+      }
     }, root.value)
 
     ScrollTrigger.refresh()

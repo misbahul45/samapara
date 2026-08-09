@@ -1,3 +1,7 @@
+<script setup lang="ts">
+defineOptions({ name: 'HomeFeature' })
+</script>
+
 <!-- <script setup lang="ts">
 import { computed } from 'vue'
 import type { ColumnDef } from '@tanstack/vue-table'

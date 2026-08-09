@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// NewPostgres membuat pool PostgreSQL READ-ONLY (role samapara_ingestor_ro).
+// NewPostgres membuat pool PostgreSQL READ-ONLY (role sampara_ingestor_ro).
 // Jika url kosong, mengembalikan nil — Go jalan tanpa fallback DB
 // (registry murni Redis cache, cocok untuk uji lokal).
 func NewPostgres(ctx context.Context, url string) (*pgxpool.Pool, error) {

@@ -1,20 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { revealOnScroll, useLandingMotion } from '../composables/useLandingMotion'
+import { currentOperationBins, prioritizedOperationBins } from '../constants/landingContent'
 
 const section = ref<HTMLElement | null>(null)
-
-const currentBins = [
-  { name: 'BIN A', value: 34, color: 'bg-green-500' },
-  { name: 'BIN B', value: 61, color: 'bg-yellow-500' },
-  { name: 'BIN C', value: 92, color: 'bg-red-500' }
-]
-
-const priorityBins = [
-  { name: 'BIN C', value: '92%', state: 'Prioritas pertama', tone: 'text-red-600', line: 'bg-red-500' },
-  { name: 'BIN B', value: '61%', state: 'Dipantau', tone: 'text-yellow-700', line: 'bg-yellow-500' },
-  { name: 'BIN A', value: '34%', state: 'Belum perlu dilayani', tone: 'text-green-700', line: 'bg-green-500' }
-]
 
 useLandingMotion(section, ({ gsap, reduceMotion }) => {
   if (!section.value) {
@@ -111,7 +100,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
           <div class="mt-10 space-y-9">
             <div
-              v-for="bin in currentBins"
+              v-for="bin in currentOperationBins"
               :key="bin.name"
             >
               <div class="mb-3 flex items-baseline justify-between">
@@ -135,7 +124,10 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
           </div>
         </div>
 
-        <div class="relative hidden w-20 items-center justify-center lg:flex" aria-hidden="true">
+        <div
+          class="relative hidden w-20 items-center justify-center lg:flex"
+          aria-hidden="true"
+        >
           <div class="h-full w-px bg-slate-200" />
           <span class="absolute grid size-11 place-items-center rounded-full border border-blue-200 bg-blue-50 text-blue-600 shadow-sm">
             <UIcon
@@ -145,7 +137,10 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
           </span>
         </div>
 
-        <div class="flex items-center gap-4 lg:hidden" aria-hidden="true">
+        <div
+          class="flex items-center gap-4 lg:hidden"
+          aria-hidden="true"
+        >
           <div class="h-px flex-1 bg-slate-200" />
           <UIcon
             name="i-lucide-arrow-down"
@@ -186,7 +181,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             </svg>
 
             <div
-              v-for="(bin, index) in priorityBins"
+              v-for="(bin, index) in prioritizedOperationBins"
               :key="bin.name"
               data-priority-row
               class="relative grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-slate-200 py-5 first:pt-3 last:border-b-0"
@@ -201,7 +196,10 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
                 <p class="text-base font-semibold text-blue-950">
                   {{ bin.name }}
                 </p>
-                <p class="mt-1 text-sm" :class="bin.tone">
+                <p
+                  class="mt-1 text-sm"
+                  :class="bin.tone"
+                >
                   {{ bin.state }}
                 </p>
               </div>
@@ -231,6 +229,6 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
 <style scoped>
 .operation-surface {
-  background: linear-gradient(180deg, #ffffff 0%, var(--color-slate-50) 65%, var(--color-blue-50) 100%);
+  background-color: white;
 }
 </style>

@@ -1,43 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { revealOnScroll, useLandingMotion } from '../composables/useLandingMotion'
+import { workflowSteps } from '../constants/landingContent'
 
 const section = ref<HTMLElement | null>(null)
-
-const steps = [
-  {
-    number: '01',
-    label: 'Condition',
-    title: 'Pahami kondisi setiap titik.',
-    description: 'Berat dan tingkat kepenuhan dipantau secara berkala dari perangkat lapangan.',
-    metric: 'Berat · Kepenuhan',
-    color: 'text-data'
-  },
-  {
-    number: '02',
-    label: 'Prediction',
-    title: 'Lihat apa yang akan terjadi berikutnya.',
-    description: 'Sistem memperkirakan bagaimana kondisi bin berkembang, termasuk estimasi ketika kendaraan tiba.',
-    metric: 'Prediksi · ETA',
-    color: 'text-blue-200'
-  },
-  {
-    number: '03',
-    label: 'Priority',
-    title: 'Tentukan titik yang benar-benar perlu dilayani.',
-    description: 'Prediksi diterjemahkan menjadi kebutuhan pelayanan, estimasi muatan, prioritas, dan tenggat.',
-    metric: 'Prioritas · Tenggat',
-    color: 'text-yellow-300'
-  },
-  {
-    number: '04',
-    label: 'Route',
-    title: 'Susun perjalanan berdasarkan kondisi operasional.',
-    description: 'Armada dan urutan kunjungan disusun dengan mempertimbangkan kapasitas dan kondisi lalu lintas.',
-    metric: 'Armada · Urutan',
-    color: 'text-green-300'
-  }
-]
 
 useLandingMotion(section, ({ gsap, reduceMotion }) => {
   if (!section.value) {
@@ -131,11 +97,6 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
     ref="section"
     class="workflow-surface relative overflow-hidden py-32 text-white lg:py-40"
   >
-    <div
-      class="pointer-events-none absolute left-[46%] top-[18%] size-[34rem] rounded-full bg-blue-600/20 blur-[110px]"
-      aria-hidden="true"
-    />
-
     <div class="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
       <div
         data-workflow-heading
@@ -175,13 +136,13 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
         <div class="grid gap-14 lg:grid-cols-4 lg:gap-8">
           <article
-            v-for="(step, index) in steps"
+            v-for="(step, index) in workflowSteps"
             :key="step.number"
             data-workflow-step
             class="relative min-w-0 pl-14 lg:pl-0"
           >
             <span
-              class="absolute left-0 top-0 grid size-7 place-items-center rounded-full border border-data/60 bg-blue-950 shadow-[0_0_0_8px_rgba(0,35,63,0.96)] lg:left-0"
+              class="absolute left-0 top-0 grid size-7 place-items-center rounded-full border border-data/60 bg-blue-950 shadow-[0_0_0_5px_rgba(0,35,63,0.88)] lg:left-0"
               aria-hidden="true"
             >
               <span class="size-2 rounded-full bg-data" />
@@ -209,12 +170,6 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
               <p class="mt-4 text-sm leading-6 text-blue-100/68">
                 {{ step.description }}
               </p>
-              <p
-                class="mt-7 text-xs font-semibold uppercase tracking-[0.16em]"
-                :class="step.color"
-              >
-                {{ step.metric }}
-              </p>
             </div>
           </article>
         </div>
@@ -225,8 +180,6 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
 <style scoped>
 .workflow-surface {
-  background:
-    radial-gradient(circle at 60% 40%, rgba(15, 76, 129, 0.65), transparent 45%),
-    linear-gradient(145deg, var(--color-blue-950), var(--color-slate-950));
+  background-color: var(--color-blue-950);
 }
 </style>

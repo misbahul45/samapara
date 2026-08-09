@@ -4,7 +4,7 @@ package stream
 
 import "time"
 
-// Telemetry payload yang dikirim ESP32 ke topic samapara/{device_id}/telemetry.
+// Telemetry payload yang dikirim ESP32 ke topic sampara/{device_id}/telemetry.
 type Telemetry struct {
 	DeviceID       string    `json:"device_id"`
 	Timestamp      time.Time `json:"timestamp"`

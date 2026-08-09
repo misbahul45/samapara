@@ -2,7 +2,7 @@
 
 Baseline placeholder sampai N-BEATSx dipasang: rata-rata 20 telemetry
 terakhir per device -> P50; P80/P90 = P50 * 1.10 / 1.20.
-Hasil ditulis ke gold.forecasts (role samapara_ai).
+Hasil ditulis ke gold.forecasts (role sampara_ai).
 """
 
 from datetime import datetime, timezone

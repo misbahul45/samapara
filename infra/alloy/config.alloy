@@ -1,5 +1,5 @@
 // ============================================================
-// SAMAPARA — Grafana Alloy config (pengganti Promtail, EOL 2026-03)
+// SAMPARA — Grafana Alloy config (pengganti Promtail, EOL 2026-03)
 // Collect log semua container Docker -> Loki.
 // ============================================================
 

@@ -1,4 +1,4 @@
-name: samapara-decision-engine-workspace
+name: sampara-decision-engine-workspace
 
 services:
   decision_engine:

@@ -33,4 +33,4 @@ fi
 RELATIVE_ENV="$(realpath --relative-to="$TARGET_DIR" "$ROOT_ENV")"
 ln -sfn "$RELATIVE_ENV" "$TARGET_ENV"
 
-echo "Samapara environment ready: $TARGET_ENV"
+echo "Sampara environment ready: $TARGET_ENV"

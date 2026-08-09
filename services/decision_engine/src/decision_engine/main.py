@@ -1,4 +1,4 @@
-"""SAMAPARA Decision Engine — FastAPI app.
+"""SAMPARA Decision Engine — FastAPI app.
 
 Internal-only: dipanggil api_platform (Bearer INTERNAL_SERVICE_TOKEN).
 Worker background (consumer Redis Streams) jalan sebagai proses terpisah:
@@ -34,8 +34,8 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(
-    title="SAMAPARA Decision Engine",
-    description="Intelligence and Agentic AI service for SAMAPARA",
+    title="SAMPARA Decision Engine",
+    description="Intelligence and Agentic AI service for SAMPARA",
     version="0.1.0",
     lifespan=lifespan,
 )

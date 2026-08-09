@@ -9,4 +9,4 @@ services:
     volumes:
       - ..:/workspace:cached
     networks:
-      - samapara_net
+      - sampara_net

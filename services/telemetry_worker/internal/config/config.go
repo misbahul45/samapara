@@ -18,7 +18,7 @@ func Load() Config {
 		RedisURL:             os.Getenv("REDIS_URL"),
 		DatabaseURL:          os.Getenv("GO_DATABASE_URL"),
 		MQTTBroker:           getenv("MQTT_BROKER", "tcp://mosquitto:1883"),
-		MQTTClientID:         getenv("MQTT_CLIENT_ID", "samapara-telemetry-worker"),
+		MQTTClientID:         getenv("MQTT_CLIENT_ID", "sampara-telemetry-worker"),
 		InternalServiceToken: os.Getenv("INTERNAL_SERVICE_TOKEN"),
 	}
 }

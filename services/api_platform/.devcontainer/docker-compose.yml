@@ -1,4 +1,4 @@
-name: samapara-api-platform-workspace
+name: sampara-api-platform-workspace
 
 services:
   api_platform:

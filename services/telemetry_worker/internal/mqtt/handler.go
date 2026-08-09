@@ -1,4 +1,4 @@
-// Package mqtt menghandle subscribe topic samapara/+/telemetry.
+// Package mqtt menghandle subscribe topic sampara/+/telemetry.
 package mqtt
 
 import (
@@ -9,8 +9,8 @@ import (
 
 	paho "github.com/eclipse/paho.mqtt.golang"
 
-	"github.com/misbahul45/samapara/services/telemetry-worker/internal/registry"
-	"github.com/misbahul45/samapara/services/telemetry-worker/internal/stream"
+	"github.com/misbahul45/sampara/services/telemetry-worker/internal/registry"
+	"github.com/misbahul45/sampara/services/telemetry-worker/internal/stream"
 )
 
 type Handler struct {

@@ -1,5 +1,5 @@
 {
-  "name": "Samapara Full Stack",
+  "name": "Sampara Full Stack",
   "dockerComposeFile": [
     "../infra/docker-compose.dev.yml",
     "docker-compose.workspace.yml"

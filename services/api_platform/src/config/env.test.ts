@@ -3,7 +3,7 @@ import { loadEnv } from './env.js'
 
 const fullEnv = {
   PORT: '4000',
-  DATABASE_URL: 'postgresql://samapara_app:secret@localhost:5432/samapara',
+  DATABASE_URL: 'postgresql://sampara_app:secret@localhost:5432/sampara',
   REDIS_URL: 'redis://:secret@localhost:6379/0',
   DECISION_ENGINE_URL: 'http://decision_engine:8000',
   TELEMETRY_WORKER_URL: 'http://telemetry_worker:8080',

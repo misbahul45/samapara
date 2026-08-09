@@ -1,5 +1,5 @@
 {
-  "name": "Samapara API Platform",
+  "name": "Sampara API Platform",
   "dockerComposeFile": "docker-compose.yml",
   "service": "api_platform",
   "workspaceFolder": "/app",

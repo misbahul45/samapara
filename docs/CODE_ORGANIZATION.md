@@ -1,4 +1,4 @@
-# Code Organization — SAMAPARA
+# Code Organization — SAMPARA
 
 Dokumen ini menetapkan tata kelola kode aplikasi web dan mobile. Dokumen ini
 tidak mewajibkan migrasi besar sekaligus; struktur fisik dibuat hanya ketika
@@ -6,7 +6,7 @@ fitur membutuhkannya.
 
 ## Keputusan arsitektur
 
-Samapara memakai Feature-First Modular Architecture dengan arah dependensi:
+Sampara memakai Feature-First Modular Architecture dengan arah dependensi:
 
 ```text
 routes/pages
@@ -43,7 +43,7 @@ akses data, query, mutation, schema, dan state spesifik domain dimiliki feature.
 
 ## Nuxt web
 
-Target bertahap untuk `apps/samapara_controll/app`:
+Target bertahap untuk `apps/sampara_controll/app`:
 
 ```text
 app/
@@ -91,7 +91,7 @@ component. Component menerima data dan event melalui props/emits.
 
 ## Expo mobile
 
-Target bertahap untuk `apps/samapara_drive/src`:
+Target bertahap untuk `apps/sampara_drive/src`:
 
 ```text
 src/

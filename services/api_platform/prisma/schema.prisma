@@ -1,4 +1,4 @@
-// SAMAPARA — Prisma schema
+// SAMPARA — Prisma schema
 // Hanya mengelola schema public + gold (business data).
 // bronze/silver (Timescale hypertables) DILUAR Prisma — diurus
 // SQL init + worker Python.

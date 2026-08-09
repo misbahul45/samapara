@@ -1,6 +1,6 @@
-// SAMAPARA telemetry_worker — MQTT ingestor → Redis Streams.
+// SAMPARA telemetry_worker — MQTT ingestor → Redis Streams.
 //
-// Alur: ESP32 → Mosquitto (samapara/{device_id}/telemetry) → Go handler →
+// Alur: ESP32 → Mosquitto (sampara/{device_id}/telemetry) → Go handler →
 // device registry (Redis cache, PostgreSQL READ ONLY fallback) →
 // dedup atomik Lua + XADD stream:telemetry → consumer Python (decision_engine).
 package main
@@ -9,12 +9,12 @@ import (
 	"context"
 	"log"
 
-	"github.com/misbahul45/samapara/services/telemetry-worker/internal/config"
-	"github.com/misbahul45/samapara/services/telemetry-worker/internal/database"
-	"github.com/misbahul45/samapara/services/telemetry-worker/internal/httpapi"
-	mqttclient "github.com/misbahul45/samapara/services/telemetry-worker/internal/mqtt"
-	"github.com/misbahul45/samapara/services/telemetry-worker/internal/registry"
-	"github.com/misbahul45/samapara/services/telemetry-worker/internal/stream"
+	"github.com/misbahul45/sampara/services/telemetry-worker/internal/config"
+	"github.com/misbahul45/sampara/services/telemetry-worker/internal/database"
+	"github.com/misbahul45/sampara/services/telemetry-worker/internal/httpapi"
+	mqttclient "github.com/misbahul45/sampara/services/telemetry-worker/internal/mqtt"
+	"github.com/misbahul45/sampara/services/telemetry-worker/internal/registry"
+	"github.com/misbahul45/sampara/services/telemetry-worker/internal/stream"
 )
 
 func main() {

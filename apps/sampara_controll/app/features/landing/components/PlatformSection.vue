@@ -1,19 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { revealOnScroll, useLandingMotion } from '../composables/useLandingMotion'
+import { controlMetrics, driveStops } from '../constants/landingContent'
 
 const section = ref<HTMLElement | null>(null)
-
-const controlMetrics = [
-  { label: 'Bin aktif', value: '21', tone: 'text-blue-950' },
-  { label: 'Perlu perhatian', value: '3', tone: 'text-red-600' },
-  { label: 'Rute aktif', value: '2', tone: 'text-green-700' }
-]
-
-const driveStops = [
-  { number: '02', place: 'Warehouse B', time: '09:45' },
-  { number: '03', place: 'Gate C', time: '10:20' }
-]
 
 useLandingMotion(section, ({ gsap, reduceMotion }) => {
   if (!section.value) {
@@ -110,13 +100,27 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             stroke-dasharray="1"
             stroke-linecap="round"
           />
-          <circle cx="8" cy="26" r="5" fill="#90DAEE" stroke="white" stroke-width="3" />
-          <circle cx="308" cy="148" r="5" fill="#1F7A3E" stroke="white" stroke-width="3" />
+          <circle
+            cx="8"
+            cy="26"
+            r="5"
+            fill="#90DAEE"
+            stroke="white"
+            stroke-width="3"
+          />
+          <circle
+            cx="308"
+            cy="148"
+            r="5"
+            fill="#1F7A3E"
+            stroke="white"
+            stroke-width="3"
+          />
         </svg>
 
         <div
           data-platform-control
-          class="relative z-0 overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-[0_30px_70px_rgba(0,53,95,0.12)] lg:w-[87%]"
+          class="relative z-0 overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white shadow-[0_12px_28px_rgba(0,53,95,0.08)] lg:w-[87%]"
           aria-label="Pratinjau SAMPARA Control dengan peta area, telemetry bin, dan rute aktif"
         >
           <div class="flex h-12 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 sm:h-14 sm:px-5">
@@ -137,25 +141,44 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
           </div>
 
           <div class="grid min-h-[370px] grid-cols-[48px_1fr] sm:min-h-[480px] sm:grid-cols-[150px_1fr]">
-            <aside class="border-r border-slate-200 bg-slate-50 p-2.5 sm:p-4" aria-label="Menu pratinjau Control">
+            <aside
+              class="border-r border-slate-200 bg-slate-50 p-2.5 sm:p-4"
+              aria-label="Menu pratinjau Control"
+            >
               <p class="hidden text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 sm:block">
                 Operations
               </p>
               <div class="mt-2 space-y-2 sm:mt-4">
                 <div class="flex items-center gap-2 rounded-md bg-blue-500 px-2.5 py-2 text-white">
-                  <UIcon name="i-lucide-map" class="size-4 shrink-0" aria-hidden="true" />
+                  <UIcon
+                    name="i-lucide-map"
+                    class="size-4 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span class="hidden text-[10px] font-semibold sm:block">Overview</span>
                 </div>
                 <div class="flex items-center gap-2 px-2.5 py-2 text-slate-500">
-                  <UIcon name="i-lucide-route" class="size-4 shrink-0" aria-hidden="true" />
+                  <UIcon
+                    name="i-lucide-route"
+                    class="size-4 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span class="hidden text-[10px] font-medium sm:block">Planning</span>
                 </div>
                 <div class="flex items-center gap-2 px-2.5 py-2 text-slate-500">
-                  <UIcon name="i-lucide-truck" class="size-4 shrink-0" aria-hidden="true" />
+                  <UIcon
+                    name="i-lucide-truck"
+                    class="size-4 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span class="hidden text-[10px] font-medium sm:block">Execution</span>
                 </div>
                 <div class="flex items-center gap-2 px-2.5 py-2 text-slate-500">
-                  <UIcon name="i-lucide-chart-column" class="size-4 shrink-0" aria-hidden="true" />
+                  <UIcon
+                    name="i-lucide-chart-column"
+                    class="size-4 shrink-0"
+                    aria-hidden="true"
+                  />
                   <span class="hidden text-[10px] font-medium sm:block">Analysis</span>
                 </div>
               </div>
@@ -183,7 +206,10 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
                   <p class="truncate text-[8px] text-slate-500 sm:text-[10px]">
                     {{ metric.label }}
                   </p>
-                  <p class="mt-1 text-lg font-bold tracking-[-0.04em] sm:text-2xl" :class="metric.tone">
+                  <p
+                    class="mt-1 text-lg font-bold tracking-[-0.04em] sm:text-2xl"
+                    :class="metric.tone"
+                  >
                     {{ metric.value }}
                   </p>
                 </div>
@@ -196,12 +222,39 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
                   fill="none"
                   aria-hidden="true"
                 >
-                  <path d="M-30 82C94 107 154 77 232 42C339 -5 447 61 792 23" stroke="#E3EBFE" stroke-width="22" />
-                  <path d="M-15 316C110 284 150 204 260 238C388 278 493 357 782 302" stroke="#E3EBFE" stroke-width="26" />
-                  <path d="M160 -30C180 93 141 147 200 214C262 283 331 304 344 430" stroke="#F0F3FF" stroke-width="16" />
-                  <path d="M621 -20C568 109 585 189 643 253C682 298 689 342 667 423" stroke="#F0F3FF" stroke-width="14" />
-                  <path d="M82 287C170 262 177 175 277 180C363 184 424 78 507 103C572 122 565 225 646 248" stroke="#004992" stroke-width="5" stroke-linecap="round" />
-                  <path d="M354 157L366 146L374 162" stroke="#004992" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M-30 82C94 107 154 77 232 42C339 -5 447 61 792 23"
+                    stroke="#E3EBFE"
+                    stroke-width="22"
+                  />
+                  <path
+                    d="M-15 316C110 284 150 204 260 238C388 278 493 357 782 302"
+                    stroke="#E3EBFE"
+                    stroke-width="26"
+                  />
+                  <path
+                    d="M160 -30C180 93 141 147 200 214C262 283 331 304 344 430"
+                    stroke="#F0F3FF"
+                    stroke-width="16"
+                  />
+                  <path
+                    d="M621 -20C568 109 585 189 643 253C682 298 689 342 667 423"
+                    stroke="#F0F3FF"
+                    stroke-width="14"
+                  />
+                  <path
+                    d="M82 287C170 262 177 175 277 180C363 184 424 78 507 103C572 122 565 225 646 248"
+                    stroke="#004992"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M354 157L366 146L374 162"
+                    stroke="#004992"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
 
                 <div class="absolute left-[10%] top-[65%]">
@@ -217,7 +270,11 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
                   <span class="mt-1 block text-[8px] font-semibold text-slate-700 sm:text-[9px]">BIN-18 · 41%</span>
                 </div>
                 <div class="absolute bottom-[19%] left-[51%] grid size-7 place-items-center rounded-md bg-blue-500 text-white shadow sm:size-8">
-                  <UIcon name="i-lucide-truck" class="size-3.5 sm:size-4" aria-hidden="true" />
+                  <UIcon
+                    name="i-lucide-truck"
+                    class="size-3.5 sm:size-4"
+                    aria-hidden="true"
+                  />
                 </div>
 
                 <div class="absolute inset-x-3 bottom-3 flex items-center justify-between border border-slate-200 bg-white/90 px-3 py-2 text-[8px] text-slate-500 backdrop-blur sm:inset-x-4 sm:text-[9px]">
@@ -232,12 +289,16 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
         <div
           data-platform-drive
-          class="relative z-20 mx-auto mt-8 w-full max-w-[300px] rounded-[2rem] border-[7px] border-slate-950 bg-white p-1.5 shadow-[0_28px_70px_rgba(0,35,63,0.24)] lg:absolute lg:bottom-0 lg:right-[1.5%] lg:mt-0 lg:w-[270px]"
+          class="relative z-20 mx-auto mt-8 w-full max-w-[300px] rounded-[2rem] border-[7px] border-slate-950 bg-white p-1.5 shadow-[0_14px_32px_rgba(0,35,63,0.14)] lg:absolute lg:bottom-0 lg:right-[1.5%] lg:mt-0 lg:w-[270px]"
           aria-label="Pratinjau SAMPARA Drive dengan tugas berikutnya dan antrean rute pengemudi"
         >
           <div class="overflow-hidden rounded-[1.45rem] bg-slate-50">
             <div class="flex h-12 items-center justify-between border-b border-slate-200 bg-white px-4">
-              <UIcon name="i-lucide-menu" class="size-4 text-slate-600" aria-hidden="true" />
+              <UIcon
+                name="i-lucide-menu"
+                class="size-4 text-slate-600"
+                aria-hidden="true"
+              />
               <span class="text-sm font-bold tracking-[-0.02em] text-blue-950">SAMPARA Drive</span>
               <span class="size-4" />
             </div>
@@ -259,28 +320,44 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
                   <div class="flex gap-2.5">
                     <span class="grid size-7 shrink-0 place-items-center rounded-full bg-blue-500 text-xs font-semibold text-white">01</span>
                     <div>
-                      <p class="text-[9px] font-medium uppercase tracking-[0.12em] text-slate-500">BIN-8492-AX</p>
-                      <p class="mt-0.5 text-xs font-semibold leading-4 text-blue-950">Building A</p>
+                      <p class="text-[9px] font-medium uppercase tracking-[0.12em] text-slate-500">
+                        BIN-8492-AX
+                      </p>
+                      <p class="mt-0.5 text-xs font-semibold leading-4 text-blue-950">
+                        Building A
+                      </p>
                     </div>
                   </div>
                   <span class="text-[9px] font-semibold text-yellow-700">AWAS</span>
                 </div>
 
                 <div class="mt-3 flex items-center gap-2 border-y border-slate-200 py-3 text-[10px] text-slate-600">
-                  <UIcon name="i-lucide-map-pin" class="size-3.5 shrink-0" aria-hidden="true" />
+                  <UIcon
+                    name="i-lucide-map-pin"
+                    class="size-3.5 shrink-0"
+                    aria-hidden="true"
+                  />
                   Area utama · Zona utara
                 </div>
 
                 <div class="mt-3 flex items-end justify-between">
                   <div>
-                    <p class="text-[8px] uppercase tracking-[0.12em] text-slate-400">Next stop</p>
-                    <p class="mt-0.5 text-base font-bold text-blue-950">7 min</p>
+                    <p class="text-[8px] uppercase tracking-[0.12em] text-slate-400">
+                      Next stop
+                    </p>
+                    <p class="mt-0.5 text-base font-bold text-blue-950">
+                      7 min
+                    </p>
                   </div>
                   <span class="text-[10px] font-semibold text-blue-700">1.2 km</span>
                 </div>
 
                 <div class="mt-3 flex h-9 items-center justify-center gap-2 rounded-lg bg-blue-500 text-[11px] font-semibold text-white">
-                  <UIcon name="i-lucide-navigation" class="size-3.5" aria-hidden="true" />
+                  <UIcon
+                    name="i-lucide-navigation"
+                    class="size-3.5"
+                    aria-hidden="true"
+                  />
                   Mulai Navigasi
                 </div>
               </div>
@@ -311,16 +388,10 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
 <style scoped>
 .platform-surface {
-  background:
-    radial-gradient(circle at 10% 30%, rgba(159, 190, 224, 0.35), transparent 35%),
-    linear-gradient(180deg, var(--color-blue-50), #ffffff);
+  background-color: var(--color-slate-50);
 }
 
 .control-map {
   background-color: var(--color-slate-50);
-  background-image:
-    linear-gradient(rgba(15, 76, 129, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 76, 129, 0.04) 1px, transparent 1px);
-  background-size: 30px 30px;
 }
 </style>

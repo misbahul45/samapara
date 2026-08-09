@@ -1,5 +1,5 @@
 {
-  "name": "Samapara Telemetry Worker",
+  "name": "Sampara Telemetry Worker",
   "dockerComposeFile": "docker-compose.yml",
   "service": "telemetry_worker",
   "workspaceFolder": "/app",

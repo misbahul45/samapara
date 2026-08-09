@@ -1,4 +1,4 @@
-name: samapara-telemetry-workspace
+name: sampara-telemetry-workspace
 
 services:
   telemetry_worker:
@@ -15,7 +15,7 @@ services:
       REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
       GO_DATABASE_URL: postgresql://${POSTGRES_INGESTOR_USER}:${POSTGRES_INGESTOR_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
       MQTT_BROKER: tcp://mosquitto:1883
-      MQTT_CLIENT_ID: samapara-telemetry-worker-devcontainer
+      MQTT_CLIENT_ID: sampara-telemetry-worker-devcontainer
       INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
     ports:
       - "127.0.0.1:8080:8080"

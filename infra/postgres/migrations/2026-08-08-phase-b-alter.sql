@@ -1,10 +1,10 @@
 -- ============================================================
--- SAMAPARA — migration live fase B (2026-08-08)
+-- SAMPARA — migration live fase B (2026-08-08)
 -- Hanya untuk volume dev yang sudah ada dari fase A.
 -- Volume BARU tidak butuh file ini (001-init.sql sudah lengkap).
 -- Idempotent: aman dijalankan ulang.
---   docker exec -i samapara_postgres_dev \
---     psql -U samapara -d samapara < infra/postgres/migrations/2026-08-08-phase-b-alter.sql
+--   docker exec -i sampara_postgres_dev \
+--     psql -U sampara -d sampara < infra/postgres/migrations/2026-08-08-phase-b-alter.sql
 -- ============================================================
 
 -- public.devices: flag active untuk registry Go

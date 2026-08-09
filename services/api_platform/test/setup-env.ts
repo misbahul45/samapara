@@ -1,5 +1,5 @@
 process.env.PORT = '3000'
-process.env.DATABASE_URL = 'postgresql://samapara_app:app@localhost:5432/samapara'
+process.env.DATABASE_URL = 'postgresql://sampara_app:app@localhost:5432/sampara'
 process.env.REDIS_URL = 'redis://:dev@localhost:6379/0'
 process.env.DECISION_ENGINE_URL = 'http://decision_engine:8000'
 process.env.TELEMETRY_WORKER_URL = 'http://telemetry_worker:8080'

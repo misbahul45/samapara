@@ -1,4 +1,4 @@
-module github.com/misbahul45/samapara/services/telemetry-worker
+module github.com/misbahul45/sampara/services/telemetry-worker
 
 go 1.25.0
 

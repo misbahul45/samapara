@@ -8,7 +8,7 @@ import (
 )
 
 // Connect membuat koneksi MQTT dengan auto-reconnect dan subscribe
-// samapara/+/telemetry (QoS 1).
+// sampara/+/telemetry (QoS 1).
 func Connect(broker, clientID string, handler *Handler) (paho.Client, error) {
 	options := paho.NewClientOptions()
 	options.AddBroker(broker)
@@ -27,7 +27,7 @@ func Connect(broker, clientID string, handler *Handler) (paho.Client, error) {
 		return nil, token.Error()
 	}
 
-	sub := client.Subscribe("samapara/+/telemetry", 1, handler.Handle)
+	sub := client.Subscribe("sampara/+/telemetry", 1, handler.Handle)
 	if !sub.WaitTimeout(10 * time.Second) {
 		return nil, fmt.Errorf("mqtt subscribe timeout")
 	}

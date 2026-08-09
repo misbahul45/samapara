@@ -1,14 +1,14 @@
 #!/bin/sh
 # ============================================================
-# SAMAPARA — buat role PostgreSQL dengan least privilege.
+# SAMPARA — buat role PostgreSQL dengan least privilege.
 # Dijalankan docker-entrypoint-initdb.d SETELAH 001-init.sql
 # (urutan alfabetis), sebagai POSTGRES_USER (superuser dev).
 #
 # Role:
-#   samapara_owner      migration / DDL only (Prisma CLI)
-#   samapara_app        Hono / Prisma runtime
-#   samapara_ingestor_ro  Go read-only (device registry fallback)
-#   samapara_ai         Python telemetry + forecast + RAG
+#   sampara_owner      migration / DDL only (Prisma CLI)
+#   sampara_app        Hono / Prisma runtime
+#   sampara_ingestor_ro  Go read-only (device registry fallback)
+#   sampara_ai         Python telemetry + forecast + RAG
 #
 # Table-level grants dijalankan TERPISAH (infra/postgres/grants.sql)
 # setelah Prisma migrations — karena tabel public/gold dibuat

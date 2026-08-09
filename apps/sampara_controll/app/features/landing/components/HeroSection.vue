@@ -64,23 +64,13 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
     ref="section"
     class="hero-surface relative flex min-h-screen items-center overflow-hidden pb-20 pt-32 sm:pt-36 lg:pb-24 lg:pt-32"
   >
-    <div
-      class="pointer-events-none absolute -right-24 top-16 size-[28rem] rounded-full bg-data/15 blur-3xl"
-      aria-hidden="true"
-    />
-    <div
-      class="pointer-events-none absolute -bottom-36 -left-40 size-[30rem] rounded-full bg-green-300/10 blur-3xl"
-      aria-hidden="true"
-    />
-
     <div class="relative mx-auto grid w-full max-w-7xl items-center gap-14 px-5 sm:px-6 lg:grid-cols-[1.03fr_0.97fr] lg:gap-12 lg:px-8">
       <div
         data-hero-copy
         class="max-w-3xl"
       >
-        <h1 class="max-w-[12ch] text-[clamp(2.375rem,6vw,4.5rem)] font-bold leading-[0.98] tracking-[-0.045em] text-blue-950">
-          Kelola pengangkutan sampah berdasarkan
-          <span class="hero-highlight">kebutuhan nyata kawasan.</span>
+        <h1 class="max-w-[14ch] text-[clamp(2.375rem,6vw,4.5rem)] font-bold leading-[0.98] tracking-[-0.045em] text-blue-950">
+          Kelola pengangkutan sesuai kebutuhan kawasan.
         </h1>
 
         <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-600 sm:text-xl sm:leading-8">
@@ -88,12 +78,12 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
         </p>
 
         <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <NuxtLink
-            to="/register-area"
-            class="inline-flex min-h-13 items-center justify-center rounded-lg bg-blue-500 px-6 text-base font-semibold text-white shadow-[0_14px_34px_rgba(15,76,129,0.2)] transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          <a
+            href="/register-area"
+            class="inline-flex min-h-13 items-center justify-center rounded-lg bg-blue-500 px-6 text-base font-semibold text-white shadow-[0_6px_16px_rgba(15,76,129,0.14)] transition-[background-color,transform] hover:-translate-y-0.5 hover:bg-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             Daftarkan Area
-          </NuxtLink>
+          </a>
           <NuxtLink
             to="/#cara-kerja"
             class="group inline-flex min-h-13 items-center justify-center gap-2 px-4 text-base font-semibold text-blue-950 transition-colors hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
@@ -106,21 +96,6 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             />
           </NuxtLink>
         </div>
-
-        <div class="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-blue-900/10 pt-5 text-sm text-slate-600">
-          <span class="inline-flex items-center gap-2">
-            <span class="size-1.5 rounded-full bg-data" />
-            Telemetry berkala
-          </span>
-          <span class="inline-flex items-center gap-2">
-            <span class="size-1.5 rounded-full bg-blue-500" />
-            Prioritas adaptif
-          </span>
-          <span class="inline-flex items-center gap-2">
-            <span class="size-1.5 rounded-full bg-green-500" />
-            Rute operasional
-          </span>
-        </div>
       </div>
 
       <div
@@ -128,7 +103,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
         class="relative mx-auto w-full max-w-[640px]"
       >
         <div
-          class="operational-map relative aspect-[1.08/1] overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/68 shadow-[0_34px_80px_rgba(0,53,95,0.14)] backdrop-blur-sm"
+          class="operational-map relative aspect-[1.08/1] overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-white shadow-[0_12px_28px_rgba(0,53,95,0.08)]"
           role="img"
           aria-label="Pratinjau area operasional dengan empat titik bin, telemetry kepenuhan, kendaraan, dan rute aktif"
         >
@@ -156,13 +131,45 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             fill="none"
             aria-hidden="true"
           >
-            <path d="M-24 182C92 146 180 161 254 126C360 75 423 107 683 33" stroke="#E3EBFE" stroke-width="18" />
-            <path d="M-38 453C81 421 139 333 234 356C346 383 411 528 685 460" stroke="#E3EBFE" stroke-width="22" />
-            <path d="M97 -20C135 102 113 174 148 238C201 334 314 342 328 621" stroke="#F0F3FF" stroke-width="14" />
-            <path d="M517 -20C498 107 468 189 491 278C514 367 570 421 548 619" stroke="#F0F3FF" stroke-width="12" />
-            <path d="M-24 182C92 146 180 161 254 126C360 75 423 107 683 33" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="8 10" />
-            <path d="M-38 453C81 421 139 333 234 356C346 383 411 528 685 460" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="8 10" />
-            <path d="M104 370C162 337 198 288 264 270C347 248 396 187 424 145C450 104 476 185 474 269C471 351 404 398 345 451" stroke="#0F4C81" stroke-width="7" stroke-linecap="round" opacity="0.14" />
+            <path
+              d="M-24 182C92 146 180 161 254 126C360 75 423 107 683 33"
+              stroke="#E3EBFE"
+              stroke-width="18"
+            />
+            <path
+              d="M-38 453C81 421 139 333 234 356C346 383 411 528 685 460"
+              stroke="#E3EBFE"
+              stroke-width="22"
+            />
+            <path
+              d="M97 -20C135 102 113 174 148 238C201 334 314 342 328 621"
+              stroke="#F0F3FF"
+              stroke-width="14"
+            />
+            <path
+              d="M517 -20C498 107 468 189 491 278C514 367 570 421 548 619"
+              stroke="#F0F3FF"
+              stroke-width="12"
+            />
+            <path
+              d="M-24 182C92 146 180 161 254 126C360 75 423 107 683 33"
+              stroke="#FFFFFF"
+              stroke-width="2"
+              stroke-dasharray="8 10"
+            />
+            <path
+              d="M-38 453C81 421 139 333 234 356C346 383 411 528 685 460"
+              stroke="#FFFFFF"
+              stroke-width="2"
+              stroke-dasharray="8 10"
+            />
+            <path
+              d="M104 370C162 337 198 288 264 270C347 248 396 187 424 145C450 104 476 185 474 269C471 351 404 398 345 451"
+              stroke="#0F4C81"
+              stroke-width="7"
+              stroke-linecap="round"
+              opacity="0.14"
+            />
             <path
               data-hero-route
               pathLength="1"
@@ -172,7 +179,13 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
               stroke-linecap="round"
               stroke-dasharray="1"
             />
-            <path d="M307 198L319 187L326 202" stroke="#004992" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+            <path
+              d="M307 198L319 187L326 202"
+              stroke="#004992"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
 
           <div class="absolute left-[9%] top-[31%] text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-400 sm:text-xs">
@@ -237,7 +250,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
             </div>
           </div>
 
-          <div class="absolute bottom-[31%] left-[41%] z-10 flex items-center gap-2 rounded-lg border border-blue-200 bg-white px-2.5 py-2 shadow-[0_8px_20px_rgba(0,73,146,0.14)] sm:px-3">
+          <div class="absolute bottom-[31%] left-[41%] z-10 flex items-center gap-2 rounded-lg border border-blue-200 bg-white px-2.5 py-2 shadow-[0_4px_12px_rgba(0,73,146,0.12)] sm:px-3">
             <span class="flex size-7 items-center justify-center rounded-md bg-blue-500 text-white">
               <UIcon
                 name="i-lucide-truck"
@@ -274,24 +287,11 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
 
 <style scoped>
 .hero-surface {
-  background:
-    radial-gradient(circle at 78% 18%, rgba(144, 218, 238, 0.38), transparent 34%),
-    radial-gradient(circle at 15% 85%, rgba(31, 122, 62, 0.08), transparent 35%),
-    linear-gradient(135deg, var(--color-slate-50), var(--color-blue-50));
-}
-
-.hero-highlight {
-  background: linear-gradient(90deg, var(--color-blue-600), var(--color-green-500));
-  background-clip: text;
-  color: transparent;
+  background-color: var(--color-blue-50);
 }
 
 .operational-map {
-  background-color: rgba(255, 255, 255, 0.68);
-  background-image:
-    linear-gradient(rgba(15, 76, 129, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 76, 129, 0.035) 1px, transparent 1px);
-  background-size: 38px 38px;
+  background-color: white;
 }
 
 .map-point {
@@ -301,7 +301,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
   place-items: center;
   border: 4px solid white;
   border-radius: 9999px;
-  box-shadow: 0 5px 18px rgba(16, 28, 47, 0.18);
+  box-shadow: 0 3px 10px rgba(16, 28, 47, 0.14);
 }
 
 .map-point span {
@@ -340,7 +340,7 @@ useLandingMotion(section, ({ gsap, reduceMotion }) => {
   font-size: 9px;
   line-height: 1;
   white-space: nowrap;
-  box-shadow: 0 7px 18px rgba(16, 28, 47, 0.08);
+  box-shadow: 0 4px 12px rgba(16, 28, 47, 0.06);
 }
 
 .map-label strong {

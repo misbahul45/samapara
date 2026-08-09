@@ -2,7 +2,7 @@ import { getSecureItem, removeSecureItem, setSecureItem } from '@/shared/storage
 import { authSessionSchema } from '../schema';
 import type { AuthSession } from '../types';
 
-const SESSION_KEY = 'samapara.auth.session';
+const SESSION_KEY = 'sampara.auth.session';
 
 export async function readAuthSession(): Promise<AuthSession | null> {
   const value = await getSecureItem(SESSION_KEY);

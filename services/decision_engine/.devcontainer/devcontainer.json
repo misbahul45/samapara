@@ -1,5 +1,5 @@
 {
-  "name": "Samapara Decision Engine",
+  "name": "Sampara Decision Engine",
   "dockerComposeFile": "docker-compose.yml",
   "service": "decision_engine",
   "workspaceFolder": "/app",

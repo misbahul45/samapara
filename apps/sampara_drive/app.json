@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "samapara_drive",
-    "slug": "samapara_drive",
+    "name": "sampara_drive",
+    "slug": "sampara_drive",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "samaparadrive",
+    "scheme": "samparadrive",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
