@@ -1,0 +1,27 @@
+{
+  "name": "Samapara Telemetry Worker",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "telemetry_worker",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false,
+  "initializeCommand": "bash \"${localWorkspaceFolder}/../../.devcontainer/initialize.sh\" \"${localWorkspaceFolder}/.devcontainer\"",
+  "forwardPorts": [
+    8080
+  ],
+  "portsAttributes": {
+    "8080": {
+      "label": "Telemetry Worker",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "go mod download",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "ms-azuretools.vscode-containers"
+      ]
+    }
+  }
+}

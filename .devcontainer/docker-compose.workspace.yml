@@ -1,0 +1,12 @@
+services:
+  workspace:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu-24.04
+    command: sleep infinity
+    init: true
+    working_dir: /workspace
+    env_file:
+      - ../.env
+    volumes:
+      - ..:/workspace:cached
+    networks:
+      - samapara_net

@@ -1,0 +1,99 @@
+name: samapara-telemetry-workspace
+
+services:
+  telemetry_worker:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    init: true
+    working_dir: /app
+    env_file:
+      - ../../../.env
+    environment:
+      GIN_MODE: debug
+      PORT: 8080
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379/0
+      GO_DATABASE_URL: postgresql://${POSTGRES_INGESTOR_USER}:${POSTGRES_INGESTOR_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      MQTT_BROKER: tcp://mosquitto:1883
+      MQTT_CLIENT_ID: samapara-telemetry-worker-devcontainer
+      INTERNAL_SERVICE_TOKEN: ${INTERNAL_SERVICE_TOKEN}
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ..:/app:cached
+      - go_mod_cache:/go/pkg/mod
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+
+  postgres:
+    image: timescale/timescaledb:latest-pg17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_OWNER_USER: ${POSTGRES_OWNER_USER}
+      POSTGRES_OWNER_PASSWORD: ${POSTGRES_OWNER_PASSWORD}
+      POSTGRES_APP_USER: ${POSTGRES_APP_USER}
+      POSTGRES_APP_PASSWORD: ${POSTGRES_APP_PASSWORD}
+      POSTGRES_INGESTOR_USER: ${POSTGRES_INGESTOR_USER}
+      POSTGRES_INGESTOR_PASSWORD: ${POSTGRES_INGESTOR_PASSWORD}
+      POSTGRES_AI_USER: ${POSTGRES_AI_USER}
+      POSTGRES_AI_PASSWORD: ${POSTGRES_AI_PASSWORD}
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=timescaledb,pg_stat_statements
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../../../infra/postgres/init/001-init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+      - ../../../infra/postgres/init/003-roles.sh:/docker-entrypoint-initdb.d/003-roles.sh:ro
+      - ../../../infra/postgres/grants.sql:/docker-entrypoint-initdb.d/004-grants.sql:ro
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:8.8.0-alpine
+    command:
+      - redis-server
+      - --requirepass
+      - ${REDIS_PASSWORD}
+      - --appendonly
+      - "yes"
+      - --maxmemory
+      - 256mb
+      - --maxmemory-policy
+      - allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - -a
+        - ${REDIS_PASSWORD}
+        - PING
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    volumes:
+      - ../../../infra/mosquitto/dev.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+
+volumes:
+  go_mod_cache:
+  postgres_data:
+  redis_data:
+  mosquitto_data:

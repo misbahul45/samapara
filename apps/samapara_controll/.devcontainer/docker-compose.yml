@@ -1,0 +1,26 @@
+name: samapara-controll-workspace
+
+services:
+  controll:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    init: true
+    working_dir: /app
+    env_file:
+      - ../../../.env
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      HOST: 0.0.0.0
+      CI: "true"
+      PNPM_CONFIG_CONFIRM_MODULES_PURGE: "false"
+      API_BASE: ${API_BASE:-http://localhost:3002}
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ..:/app:cached
+      - controll_node_modules:/app/node_modules
+
+volumes:
+  controll_node_modules:

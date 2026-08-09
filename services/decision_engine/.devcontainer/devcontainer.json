@@ -1,0 +1,32 @@
+{
+  "name": "Samapara Decision Engine",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "decision_engine",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false,
+  "initializeCommand": "bash \"${localWorkspaceFolder}/../../.devcontainer/initialize.sh\" \"${localWorkspaceFolder}/.devcontainer\"",
+  "forwardPorts": [
+    8000
+  ],
+  "portsAttributes": {
+    "8000": {
+      "label": "Decision Engine",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "uv sync --frozen",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-python.debugpy",
+        "ms-azuretools.vscode-containers"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/app/.venv/bin/python"
+      }
+    }
+  }
+}

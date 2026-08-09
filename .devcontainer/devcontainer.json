@@ -1,0 +1,61 @@
+{
+  "name": "Samapara Full Stack",
+  "dockerComposeFile": [
+    "../infra/docker-compose.dev.yml",
+    "docker-compose.workspace.yml"
+  ],
+  "service": "workspace",
+  "runServices": [
+    "workspace",
+    "controll",
+    "api_platform",
+    "decision_engine",
+    "decision_worker",
+    "telemetry_worker",
+    "nginx",
+    "postgres",
+    "redis",
+    "qdrant",
+    "mosquitto",
+    "minio",
+    "postgres-exporter",
+    "prometheus",
+    "loki",
+    "alloy",
+    "cadvisor",
+    "grafana"
+  ],
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false,
+  "remoteUser": "vscode",
+  "initializeCommand": "bash \"${localWorkspaceFolder}/.devcontainer/initialize.sh\" \"${localWorkspaceFolder}/infra\"",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.14"
+    },
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "1.25"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Vue.volar",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "golang.go",
+        "ms-azuretools.vscode-containers"
+      ]
+    }
+  }
+}

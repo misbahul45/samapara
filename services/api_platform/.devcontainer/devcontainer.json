@@ -1,0 +1,27 @@
+{
+  "name": "Samapara API Platform",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "api_platform",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false,
+  "initializeCommand": "bash \"${localWorkspaceFolder}/../../.devcontainer/initialize.sh\" \"${localWorkspaceFolder}/.devcontainer\"",
+  "forwardPorts": [
+    3002
+  ],
+  "portsAttributes": {
+    "3002": {
+      "label": "API Platform",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "corepack enable && pnpm install --frozen-lockfile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-azuretools.vscode-containers"
+      ]
+    }
+  }
+}

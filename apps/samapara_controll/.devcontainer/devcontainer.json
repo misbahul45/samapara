@@ -1,0 +1,29 @@
+{
+  "name": "Samapara Controll - Nuxt",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "controll",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": false,
+  "initializeCommand": "bash \"${localWorkspaceFolder}/../../.devcontainer/initialize.sh\" \"${localWorkspaceFolder}/.devcontainer\"",
+  "forwardPorts": [
+    3000
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Samapara Nuxt",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "corepack enable && pnpm install --frozen-lockfile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Vue.volar",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "ms-azuretools.vscode-containers"
+      ]
+    }
+  }
+}
