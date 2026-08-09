@@ -2,7 +2,10 @@ import type { Ref } from 'vue'
 import { onBeforeUnmount, onMounted } from 'vue'
 
 type Gsap = typeof import('gsap')['gsap']
-type ScrollTriggerPlugin = typeof import('gsap/ScrollTrigger')['ScrollTrigger']
+type ScrollTriggerPlugin =
+  typeof import('gsap/ScrollTrigger')['ScrollTrigger']
+type MotionPathPluginType =
+  typeof import('gsap/MotionPathPlugin')['MotionPathPlugin']
 
 type MotionTarget =
   | Element
@@ -12,6 +15,7 @@ type MotionTarget =
 interface LandingMotionContext {
   gsap: Gsap
   ScrollTrigger: ScrollTriggerPlugin
+  MotionPathPlugin: MotionPathPluginType
   reduceMotion: boolean
 }
 
@@ -31,17 +35,22 @@ export function useLandingMotion(
   onMounted(async () => {
     const [
       { gsap },
-      { ScrollTrigger }
+      { ScrollTrigger },
+      { MotionPathPlugin }
     ] = await Promise.all([
       import('gsap'),
-      import('gsap/ScrollTrigger')
+      import('gsap/ScrollTrigger'),
+      import('gsap/MotionPathPlugin')
     ])
 
     if (disposed || !root.value) {
       return
     }
 
-    gsap.registerPlugin(ScrollTrigger)
+    gsap.registerPlugin(
+      ScrollTrigger,
+      MotionPathPlugin
+    )
 
     const reduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
@@ -51,6 +60,7 @@ export function useLandingMotion(
       const result = setup({
         gsap,
         ScrollTrigger,
+        MotionPathPlugin,
         reduceMotion
       })
 
