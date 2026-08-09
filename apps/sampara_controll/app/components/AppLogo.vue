@@ -1,46 +1,13 @@
 <template>
   <div class="flex items-center gap-2">
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 28 28"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <rect
-        width="28"
-        height="28"
-        rx="6"
-        fill="#0F4C81"
-      />
-      <rect
-        x="6"
-        y="14"
-        width="4"
-        height="8"
-        rx="1"
-        fill="#FFFFFF"
-      />
-      <rect
-        x="12"
-        y="10"
-        width="4"
-        height="12"
-        rx="1"
-        fill="#FFFFFF"
-      />
-      <rect
-        x="18"
-        y="6"
-        width="4"
-        height="16"
-        rx="1"
-        fill="#90DAEE"
-      />
-    </svg>
-    <span class="text-lg font-bold tracking-[-0.035em] text-blue-950">
-      SAMPARA
-    </span>
+    <NuxtImg
+      src="/logo.png"
+      alt="SAMPARA"
+      width="180"
+      height="72"
+      loading="eager"
+      fetchpriority="high"
+      class="h-12 w-auto object-contain sm:h-14"
+    />
   </div>
 </template>

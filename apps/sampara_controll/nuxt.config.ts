@@ -1,9 +1,5 @@
 export default defineNuxtConfig({
-  modules: [
-    '@nuxt/eslint',
-    ['@nuxt/icon', { localApiEndpoint: '/_nuxt_icon' }],
-    '@nuxt/ui'
-  ],
+  modules: ['@nuxt/eslint', ['@nuxt/icon', { localApiEndpoint: '/_nuxt_icon' }], '@nuxt/ui', '@nuxt/image'],
 
   devtools: {
     enabled: true
