@@ -1,4 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { useApi } from '~/shared/api/client'
+import { useServerPrefetchQuery } from '~/shared/query/useServerPrefetchQuery'
 import { deviceKeys } from './deviceKeys'
 
 export interface Device {
@@ -28,19 +30,23 @@ export interface DeviceListResponse {
 
 export function useDevicesQuery() {
   const api = useApi()
-  return useQuery({
+  const query = useQuery({
     queryKey: deviceKeys.list(),
     queryFn: () => api.get<DeviceListResponse>('/devices')
   })
+
+  return useServerPrefetchQuery(query)
 }
 
 export function useDeviceDetailQuery(deviceId: string) {
   const api = useApi()
-  return useQuery({
+  const query = useQuery({
     queryKey: deviceKeys.detail(deviceId),
     queryFn: () => api.get<{ device: Device, latest_forecast: unknown | null }>(`/devices/${deviceId}`),
     enabled: () => deviceId.length > 0
   })
+
+  return useServerPrefetchQuery(query, deviceId.length > 0)
 }
 
 export function useRunForecastMutation() {

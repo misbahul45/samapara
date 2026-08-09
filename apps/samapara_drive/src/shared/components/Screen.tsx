@@ -2,7 +2,7 @@ import type { PropsWithChildren } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 
 type ScreenProps = PropsWithChildren<{
   className?: string;

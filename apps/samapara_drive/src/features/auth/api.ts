@@ -1,7 +1,24 @@
-import { apiPost } from '@/api/client';
 import type { LoginInput } from './schema';
 import type { LoginResponse } from './types';
 
-export function login(payload: LoginInput) {
-  return apiPost<LoginResponse>('/auth/login', { ...payload });
+function displayNameFromEmail(email: string) {
+  return email
+    .split('@')[0]
+    .split(/[._-]/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+export async function login(payload: LoginInput): Promise<LoginResponse> {
+  await new Promise((resolve) => setTimeout(resolve, 400));
+  const email = payload.email.trim().toLowerCase();
+
+  return {
+    user: {
+      id: `demo:${email}`,
+      name: displayNameFromEmail(email) || 'Pengguna Demo',
+      email,
+    },
+  };
 }

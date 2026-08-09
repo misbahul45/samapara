@@ -4,16 +4,17 @@ interface ApiErrorBody {
 
 export function useApi() {
   const config = useRuntimeConfig()
+  const apiBase = import.meta.server ? config.apiBaseInternal : config.public.apiBase
 
   const get = async <T>(path: string): Promise<T> => {
-    const res = await $fetch<T>(`${config.public.apiBase}${path}`, {
+    const res = await $fetch<T>(`${apiBase}${path}`, {
       headers: { accept: 'application/json' }
     })
     return res
   }
 
   const post = async <T>(path: string, body?: Record<string, unknown>): Promise<T> => {
-    const res = await $fetch<T>(`${config.public.apiBase}${path}`, {
+    const res = await $fetch<T>(`${apiBase}${path}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body

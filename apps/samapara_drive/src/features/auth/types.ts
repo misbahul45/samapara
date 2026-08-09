@@ -1,11 +1,6 @@
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-};
+import type { z } from 'zod';
+import type { authSessionSchema, authUserSchema } from './schema';
 
-export type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-  user: User;
-};
+export type User = z.infer<typeof authUserSchema>;
+export type AuthSession = z.infer<typeof authSessionSchema>;
+export type LoginResponse = AuthSession;

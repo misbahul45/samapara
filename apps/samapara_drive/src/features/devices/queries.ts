@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { apiGet, apiPost } from '@/api/client';
+import { apiGet, apiPost } from '@/shared/api/client';
 
 export const deviceKeys = {
   all: ['devices'] as const,
@@ -8,7 +8,7 @@ export const deviceKeys = {
   list: () => [...deviceKeys.lists()] as const,
   details: () => [...deviceKeys.all, 'detail'] as const,
   detail: (id: string) => [...deviceKeys.details(), id] as const,
-  forecasts: (id: string) => [...deviceKeys.detail(id), 'forecasts'] as const
+  forecasts: (id: string) => [...deviceKeys.detail(id), 'forecasts'] as const,
 };
 
 export interface Device {
@@ -44,7 +44,7 @@ interface DeviceDetailResponse {
 export function useDevicesQuery() {
   return useQuery({
     queryKey: deviceKeys.list(),
-    queryFn: () => apiGet<DeviceListResponse>('/devices')
+    queryFn: () => apiGet<DeviceListResponse>('/devices'),
   });
 }
 
@@ -52,7 +52,7 @@ export function useDeviceDetailQuery(deviceId: string) {
   return useQuery({
     queryKey: deviceKeys.detail(deviceId),
     queryFn: () => apiGet<DeviceDetailResponse>(`/devices/${deviceId}`),
-    enabled: deviceId.length > 0
+    enabled: deviceId.length > 0,
   });
 }
 
@@ -63,6 +63,6 @@ export function useRunForecastMutation() {
       apiPost<{ forecast: ForecastResult }>(`/devices/${deviceId}/forecast/run`),
     onSuccess: (_data, deviceId) => {
       void queryClient.invalidateQueries({ queryKey: deviceKeys.detail(deviceId) });
-    }
+    },
   });
 }

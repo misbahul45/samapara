@@ -160,6 +160,25 @@ sementara seperti sidebar, modal, draft filter, selected map layer, dan wizard.
 Setiap feature yang memakai TanStack Query memiliki query-key factory sendiri.
 Mutation menginvalidasi query lewat factory tersebut, bukan string tersebar.
 
+Alur query Nuxt dari SSR ke CSR:
+
+```text
+SSR request
+  ↓
+QueryClient per request
+  ↓
+server prefetch
+  ↓
+dehydrate ke payload Nuxt
+  ↓
+hydrate di browser
+  ↓
+cache, refetch, dan invalidation CSR
+```
+
+Server memakai `API_BASE_INTERNAL`, sedangkan browser memakai `apiBase`
+publik. Jangan membuat `QueryClient` pada module scope plugin SSR karena cache
+
 ## Shared contracts
 
 Target jangka menengah adalah `packages/contracts` untuk schema Zod, DTO, enum,
@@ -207,12 +226,42 @@ tanpa verifikasi.
 6. Jalankan lint, typecheck, dan test aplikasi yang terdampak.
 7. Hapus folder global lama hanya setelah tidak ada consumer tersisa.
 
-Prioritas saat ini:
+## Checkpoint implementasi
 
-1. Nuxt `app/queries` ke feature pemiliknya.
-2. Expo `src/api`, `src/queries`, dan `src/stores` ke feature atau `shared`.
-3. Standardisasi shared API client dan error model per platform.
-4. Ekstraksi `packages/contracts` setelah kontrak API stabil.
+Migrasi management code yang sudah diterapkan:
+
+- Nuxt memakai `app/shared/api` untuk client HTTP generik.
+- Query dan view detail device Nuxt berada di `app/features/devices` dan
+  diekspos melalui public API feature.
+- Route detail device Nuxt hanya membaca parameter dan merender feature view.
+- Expo memusatkan environment di `src/config`, provider di `src/providers`, dan
+  kemampuan generik di `src/shared`.
+- Auth, dashboard, dan query device Expo berada di feature pemiliknya dan
+  diekspos melalui `index.ts`.
+- Route login dan home Expo hanya mengekspor screen dari public API feature.
+- `src/components/ui` Expo tetap dipertahankan sebagai lokasi primitive UI
+  domain-agnostic yang dikelola generator; utilitas generiknya berada di
+  `src/shared/lib`.
+- Folder global lama untuk API, query, dan store tidak dipertahankan setelah
+  seluruh consumer aktif selesai dimigrasikan.
+
+### Reference login slice
+
+Vertical slice login menjadi contoh boundary aktif: Nuxt menyimpan demo user
+melalui shared cookie-backed state, sedangkan Expo menyimpan session tervalidasi
+melalui shared SecureStore dan menghidrasinya pada root provider.
+
+Implementasi ini adalah demo frontend, bukan production authentication. API
+Platform belum memiliki endpoint login, password verification, atau token issuer.
+
+Prioritas berikutnya:
+
+1. Terapkan pola yang sama ketika feature domain berikutnya benar-benar
+   disentuh; jangan membuat skeleton folder lebih dahulu.
+2. Standardisasi error model dan response validation per platform saat endpoint
+   terkait dimigrasikan.
+3. Ekstrak `packages/contracts` hanya setelah kontrak API stabil dan memiliki
+   consumer, build configuration, serta test nyata.
 
 ## Review checklist
 

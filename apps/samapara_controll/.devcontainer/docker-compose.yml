@@ -15,7 +15,10 @@ services:
       HOST: 0.0.0.0
       CI: "true"
       PNPM_CONFIG_CONFIRM_MODULES_PURGE: "false"
-      API_BASE: ${API_BASE:-http://localhost:3002}
+      API_BASE_INTERNAL: ${API_BASE_INTERNAL:-http://host.docker.internal:3002/api}
+      API_BASE: ${API_BASE:-http://localhost:3002/api}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "127.0.0.1:3000:3000"
     volumes:

@@ -1,4 +1,6 @@
-<script setup>
+<script setup lang="ts">
+import { useAuthSession } from '~/features/auth'
+
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
@@ -13,6 +15,7 @@ useHead({
 
 const title = 'SAMAPARA Control'
 const description = 'Dashboard operasional SAMAPARA — monitoring container pintar dan prediksi pengangkutan sampah.'
+const { user, logout } = useAuthSession()
 
 useSeoMeta({
   title,
@@ -38,6 +41,28 @@ useSeoMeta({
           label="Devices"
           color="neutral"
           variant="ghost"
+        />
+        <span
+          v-if="user"
+          class="hidden text-sm text-muted sm:inline"
+        >
+          {{ user.email }}
+        </span>
+        <UButton
+          v-if="user"
+          icon="i-lucide-log-out"
+          label="Keluar"
+          color="neutral"
+          variant="ghost"
+          @click="logout"
+        />
+        <UButton
+          v-else
+          to="/auth/login"
+          icon="i-lucide-log-in"
+          label="Masuk"
+          color="primary"
+          variant="soft"
         />
       </template>
     </UHeader>

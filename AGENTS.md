@@ -255,7 +255,7 @@ Full stack:
 
 ```text
 GET http://127.0.0.1:8090/healthz
-GET http://127.0.0.1:8090/api/healthz
+GET http://127.0.0.1:8090/api/
 ```
 
 Isolated mode:

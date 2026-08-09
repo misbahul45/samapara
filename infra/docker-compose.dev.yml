@@ -18,6 +18,8 @@ services:
       HOST: 0.0.0.0
       CI: "true"
       PNPM_CONFIG_CONFIRM_MODULES_PURGE: "false"
+      API_BASE_INTERNAL: http://api_platform:3000/api
+      API_BASE: /api
     volumes:
       - ../apps/samapara_controll:/app
       - controll_node_modules:/app/node_modules
