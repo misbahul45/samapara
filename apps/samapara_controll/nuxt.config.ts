@@ -11,6 +11,10 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  ui: {
+    colorMode: false
+  },
+
   runtimeConfig: {
     public: {
       apiBase: process.env.API_BASE ?? 'http://localhost:8090/api'

@@ -81,9 +81,12 @@ function runForecast() {
                 <p class="text-sm text-foreground/60">
                   Status
                 </p>
-                <p class="font-medium">
+                <UBadge
+                  :color="data.device.active ? 'success' : 'error'"
+                  variant="subtle"
+                >
                   {{ data.device.active ? 'Aktif' : 'Nonaktif' }}
-                </p>
+                </UBadge>
               </div>
             </UPageGrid>
           </UPageGrid>
@@ -95,12 +98,13 @@ function runForecast() {
         title="Forecast terakhir"
       >
         <template #default>
+          <div class="mb-4 h-1 w-full rounded-full bg-data" />
           <div class="grid grid-cols-3 gap-4">
             <div>
               <p class="text-sm text-foreground/60">
                 P50
               </p>
-              <p class="text-2xl font-semibold">
+              <p class="text-2xl font-semibold text-primary">
                 {{ forecast.p50 ?? '-' }} kg
               </p>
             </div>
@@ -108,7 +112,7 @@ function runForecast() {
               <p class="text-sm text-foreground/60">
                 P80
               </p>
-              <p class="text-2xl font-semibold">
+              <p class="text-2xl font-semibold text-primary">
                 {{ forecast.p80 ?? '-' }} kg
               </p>
             </div>
@@ -116,7 +120,7 @@ function runForecast() {
               <p class="text-sm text-foreground/60">
                 P90
               </p>
-              <p class="text-2xl font-semibold">
+              <p class="text-2xl font-semibold text-primary">
                 {{ forecast.p90 ?? '-' }} kg
               </p>
             </div>

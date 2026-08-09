@@ -73,6 +73,15 @@ const rows = computed<DeviceRow[]>(() =>
             {{ row.original.name }}
           </div>
         </template>
+
+        <template #active-cell="{ row }">
+          <UBadge
+            :color="row.original.active === 'Aktif' ? 'success' : 'error'"
+            variant="subtle"
+          >
+            {{ row.original.active }}
+          </UBadge>
+        </template>
       </UTable>
     </UPageBody>
   </UPage>
