@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthSession } from '~/features/auth'
+import { LandingFooter, LandingNavbar } from '~/features/landing'
 
 useHead({
   meta: [
@@ -13,70 +13,28 @@ useHead({
   }
 })
 
-const title = 'SAMAPARA Control'
-const description = 'Dashboard operasional SAMAPARA — monitoring container pintar dan prediksi pengangkutan sampah.'
-const { user, logout } = useAuthSession()
+const route = useRoute()
+const showPublicChrome = computed(() => !route.path.startsWith('/dashboard'))
+const offsetPublicPage = computed(() => showPublicChrome.value && route.path !== '/')
 
 useSeoMeta({
-  title,
-  description,
-  ogTitle: title,
-  ogDescription: description
+  title: 'SAMPARA Control',
+  description: 'Platform operasional SAMPARA untuk pemantauan kondisi, prioritas, dan perencanaan pengangkutan sampah.',
+  ogTitle: 'SAMPARA Control',
+  ogDescription: 'Platform operasional SAMPARA untuk pemantauan kondisi, prioritas, dan perencanaan pengangkutan sampah.'
 })
 </script>
 
 <template>
   <UApp>
-    <UHeader>
-      <template #left>
-        <NuxtLink to="/">
-          <AppLogo class="w-auto h-6 shrink-0" />
-        </NuxtLink>
-      </template>
+    <div class="min-h-screen">
+      <LandingNavbar v-if="showPublicChrome" />
 
-      <template #right>
-        <UButton
-          to="/"
-          icon="i-lucide-box"
-          label="Devices"
-          color="neutral"
-          variant="ghost"
-        />
-        <span
-          v-if="user"
-          class="hidden text-sm text-muted sm:inline"
-        >
-          {{ user.email }}
-        </span>
-        <UButton
-          v-if="user"
-          icon="i-lucide-log-out"
-          label="Keluar"
-          color="neutral"
-          variant="ghost"
-          @click="logout"
-        />
-        <UButton
-          v-else
-          to="/auth/login"
-          icon="i-lucide-log-in"
-          label="Masuk"
-          color="primary"
-          variant="soft"
-        />
-      </template>
-    </UHeader>
+      <main :class="{ 'pt-[72px]': offsetPublicPage }">
+        <NuxtPage />
+      </main>
 
-    <UMain>
-      <NuxtPage />
-    </UMain>
-
-    <UFooter>
-      <template #left>
-        <p class="text-sm text-muted">
-          SAMAPARA • © {{ new Date().getFullYear() }}
-        </p>
-      </template>
-    </UFooter>
+      <LandingFooter v-if="showPublicChrome" />
+    </div>
   </UApp>
 </template>

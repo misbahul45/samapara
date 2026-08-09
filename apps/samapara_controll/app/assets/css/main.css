@@ -1,3 +1,7 @@
+@import "@fontsource/public-sans/400.css";
+@import "@fontsource/public-sans/500.css";
+@import "@fontsource/public-sans/600.css";
+@import "@fontsource/public-sans/700.css";
 @import "tailwindcss";
 @import "@nuxt/ui";
 
@@ -65,4 +69,36 @@
   --color-slate-950: #101C2F;
 
   --color-data: #90DAEE;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-slate-50);
+  }
+
+  body {
+    min-width: 320px;
+    margin: 0;
+    background: var(--color-slate-50);
+    color: var(--color-slate-950);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-data) 55%, white);
+    color: var(--color-blue-950);
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

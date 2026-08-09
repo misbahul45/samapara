@@ -1,0 +1,8 @@
+export { default as FinalCTASection } from './components/FinalCTASection.vue'
+export { default as HeroSection } from './components/HeroSection.vue'
+export { default as LandingFooter } from './components/LandingFooter.vue'
+export { default as LandingNavbar } from './components/LandingNavbar.vue'
+export { default as OperationSection } from './components/OperationSection.vue'
+export { default as PlatformSection } from './components/PlatformSection.vue'
+export { default as RegisterAreaSection } from './components/RegisterAreaSection.vue'
+export { default as WorkflowSection } from './components/WorkflowSection.vue'

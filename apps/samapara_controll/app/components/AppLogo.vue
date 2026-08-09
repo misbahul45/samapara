@@ -39,7 +39,7 @@
         fill="#90DAEE"
       />
     </svg>
-    <span class="text-lg font-bold tracking-tight text-navy">
+    <span class="text-lg font-bold tracking-[-0.035em] text-blue-950">
       SAMAPARA
     </span>
   </div>
